@@ -60,7 +60,7 @@ const ManageOfficiators = () => {
     if (ranksFromRedux === null) {
       const getAllRanks = async () => {
         try {
-          const endpointToGetRank = `${process.env.REACT_APP_API_URL}/rankings`;
+          const endpointToGetRank = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rankings`;
           const getRanks = await axios.get(endpointToGetRank);
           dispatch(setRanks(getRanks.data));
         } catch (error) {

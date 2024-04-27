@@ -11,23 +11,23 @@ function getRandomNumber(min: number, max: number) {
   return Math.round(Math.random() * (max - min) + min);
 }
 
-// function fakeFetch(date: Dayjs, { signal }: {signal: AbortSignal}) {
-//   return new Promise((resolve, reject) => {
-//     const timeout = setTimeout(() => {
-//       const daysInMonth: any = date.daysInMonth();
-//       const daysToHighlight: any = [1, 2, 3].map(() =>
-//         getRandomNumber(1, daysInMonth)
-//       );
+function fakeFetch(date: Dayjs, { signal }: {signal: AbortSignal}) {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      const daysInMonth: any = date.daysInMonth();
+      const daysToHighlight: any = [1, 2, 3].map(() =>
+        getRandomNumber(1, daysInMonth)
+      );
 
-//       resolve({ daysToHighlight });
-//     }, 500);
+      resolve({ daysToHighlight });
+    }, 500);
 
-//     signal.onabort = () => {
-//       clearTimeout(timeout);
-//       reject(new DOMException("aborted", "AbortError"));
-//     };
-//   });
-// }
+    signal.onabort = () => {
+      clearTimeout(timeout);
+      reject(new DOMException("aborted", "AbortError"));
+    };
+  });
+}
 
 const initialValue = dayjs("2024-04-17");
 
@@ -62,29 +62,29 @@ export default function EnforcementsCalendar({
   const [isLoading, setIsLoading] = React.useState(false);
   const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
 
-  // const fetchHighlightedDays = (date: Dayjs) => {
-  //   const controller = new AbortController();
-  //   fakeFetch(date, {
-  //     signal: controller.signal,
-  //   })
-  //     .then(({ daysToHighlight }: any) => {
-  //       setHighlightedDays(daysToHighlight);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((error) => {
-  //       if (error.name !== "AbortError") {
-  //         throw error;
-  //       }
-  //     });
+  const fetchHighlightedDays = (date: Dayjs) => {
+    const controller = new AbortController();
+    fakeFetch(date, {
+      signal: controller.signal,
+    })
+      .then(({ daysToHighlight }: any) => {
+        setHighlightedDays(daysToHighlight);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        if (error.name !== "AbortError") {
+          throw error;
+        }
+      });
 
-  //   (requestAbortController as any).current = controller;
-  // };
+    (requestAbortController as any).current = controller;
+  };
 
-  // React.useEffect(() => {
-  //   fetchHighlightedDays(initialValue);
-  //   // abort request on unmount
-  //   return () => (requestAbortController as any).current?.abort();
-  // }, []);
+  React.useEffect(() => {
+    fetchHighlightedDays(initialValue);
+    // abort request on unmount
+    return () => (requestAbortController as any).current?.abort();
+  }, []);
 
   const handleMonthChange = (date: Dayjs) => {
     if (requestAbortController.current) {
@@ -95,7 +95,7 @@ export default function EnforcementsCalendar({
 
     setIsLoading(true);
     setHighlightedDays([]);
-    // fetchHighlightedDays(date);
+    fetchHighlightedDays(date);
   };
 
   // date formatting
