@@ -8,13 +8,13 @@ const authSlice = createSlice({
         email: null
     },
     reducers: {
-        setAuthDetails: (state, action) => {
+        setAuthDetails: (state: any, action: any) => {
             const {name, parish, email} = action.payload
             state.name = name;
             state.parish = parish;
             state.email = email;
         },
-        clearAuthDetails: (state) => {
+        clearAuthDetails: (state: any) => {
             state.name = null;
             state.parish = null;
             state.email = null;

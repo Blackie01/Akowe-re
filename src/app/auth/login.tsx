@@ -18,13 +18,13 @@ const Login = () => {
 
   const router = useRouter()
   const dispatch = useDispatch();
-  const [username, setUsername] = useState<string>();
-  const [parish, setParish] = useState<string>()
-  const [email, setEmail] = useState<string>();
+  const [username, setUsername] = useState<any>();
+  const [parish, setParish] = useState<any>()
+  const [email, setEmail] = useState<any>();
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    dispatch(setAuthDetails({ name: username, parish: parish, email: email }));
+    dispatch(setAuthDetails({ name: username, parish: parish, email: email } as { name: any; parish: any; email: any; } & void));
     router.push("/dashboard/officiators");
   };
   return (
