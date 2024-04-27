@@ -1,0 +1,72 @@
+.overallLoginContainer {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.introContainer {
+    position: absolute;
+    height: 100vh;
+}
+
+.loginContainer {
+    border: 1px solid var(--brand-color);
+    width: max-content;
+    padding: 2rem;
+    color: #000;
+    border-radius: 5px;
+
+}
+
+.pageTitle {
+    text-align: center;
+    margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--brand-color);
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form input {
+    width: 20rem;
+    height: 2rem;
+    border: 1px solid var(--brand-color);
+    padding: 0 1rem;
+    border-radius: 5px;
+
+}
+
+.form input:focus {
+    outline: none;
+}
+
+.submit {
+    background-color: var(--brand-color);
+    color: #fff;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    border: 1px solid var(--brand-color);
+}
+
+.submit:hover{
+    color: #faf7f7c0;
+}

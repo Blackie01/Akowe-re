@@ -1,0 +1,203 @@
+.title {
+  width: max-content;
+  color: var(--brand-color);
+}
+
+.createNew,
+.addNew {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--brand-color);
+  width: max-content;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  cursor: pointer;
+  color: var(--brand-color);
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.addNew {
+  margin-top: 0;
+}
+
+.addNew p {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.saveToRoster {
+  background-color: var(--brand-color);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--brand-color);
+  width: max-content;
+  font-size: 0.9rem;
+  margin-top: 0;
+  transition: all 0.3s ease-in-out;
+  border-radius: 5px;
+}
+
+.saveToRoster:hover {
+  background-color: #025d5d;
+}
+
+.createNew:hover,
+.addNew:hover {
+  border: 1px solid #fff;
+  background-color: var(--brand-color);
+  color: #fff;
+}
+
+.closeDialog {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border-radius: 50%;
+  padding: 0.3rem;
+}
+
+.closeDialog:hover {
+  opacity: 0.6;
+  background-color: #a0caca;
+}
+
+.dialogForm h2 {
+  font-weight: bold;
+}
+
+.persona {
+  display: flex;
+  gap: 3.5rem;
+  width: max-content;
+}
+
+.personaInputContainer {
+  width: 15rem;
+}
+
+.personaSelectContainer {
+  width: 16rem;
+}
+
+.persona input {
+  width: 100%;
+  height: 2rem;
+  border: 1px solid var(--brand-color);
+  padding: 0 0.5rem;
+  border-radius: 5px;
+}
+
+.persona input:focus {
+  outline: none;
+}
+
+.personaSelectContainer select {
+  width: 100%;
+
+  height: 2.15rem;
+  border: 1px solid var(--brand-color);
+  padding: 0 0.5rem;
+  border-radius: 5px;
+}
+
+.personaSelectContainer select:focus {
+  outline: none;
+}
+
+.checkboxOverallContainer {
+  margin-top: 2rem;
+}
+
+.dialogTitles {
+  font-weight: bold;
+  color: var(--brand-color);
+}
+
+.customizationToSelect {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 3rem;
+  /* flex-wrap: wrap; */
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.individualCheckboxContainer {
+  display: flex;
+  /* min-width: 50%; */
+  width: 16rem;
+  justify-content: space-between;
+}
+
+.addEnforcements {
+  margin-top: 2rem;
+}
+
+.enforcementTitle {
+  cursor: pointer;
+  font-weight: 600;
+
+}
+
+.enforcementTitle:hover {
+  color: var(--brand-color);
+}
+
+.enforcementSelection {
+  display: flex;
+  padding-left: 0;
+}
+
+.enforcementSelectContainer {
+  width: 14.3rem;
+  padding-top: 1.5rem;
+}
+
+.enforcementSelectContainer select {
+  width: 100%;
+  height: 2.15rem;
+  border: 1px solid var(--brand-color);
+  padding: 0 0.5rem;
+  border-radius: 5px;
+}
+
+.enforcementSelectContainer select:focus {
+  outline: none;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.displayAllOfficiators {
+  margin-top: 5rem;
+}
+
+.rosterHeader {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.downloadIcon:hover {
+  color: var(--brand-color);
+  cursor: pointer;
+}
+
+.feedbackContainer {
+  margin-top: 5rem;
+}
+
+.scrollContainer {
+  overflow-x: scroll;
+border: 1px solid var(--brand-color);
+}

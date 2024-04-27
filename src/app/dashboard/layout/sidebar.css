@@ -1,0 +1,38 @@
+.overallContainer {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    padding: 2rem 1rem;
+    position: relative;
+    height: 90%;
+}
+
+.menuItems {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.menu {
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+}
+
+.menu:hover {
+    color: #faf7f7c0;
+}
+
+.sidebarLogo {
+    font-weight: bold;
+}
+
+.parishContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: max-content;
+    position: absolute;
+    bottom: 0;
+}

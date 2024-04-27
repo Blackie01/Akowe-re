@@ -1,0 +1,28 @@
+.service-table {
+  border-collapse: collapse;
+  width: 1280px;
+  height: 960px;
+}
+
+.service-table th,
+.service-table td {
+  border: 1px solid #ddd;
+  border: 1px solid var(--brand-color);
+  padding: 6px;
+  font-size: 0.9rem;
+}
+
+.service-table th {
+  background-color: var(--brand-color);
+  color: #fff;
+  padding: 1rem 0;
+  font-size: 14px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.sunday-row {
+  background-color: #ebfcfc;
+}
