@@ -352,10 +352,10 @@ const ManageOfficiators = () => {
                     {showEnforcement ? (
                       <div className={styles.enforcementSelection}>
                         <div>
-                          {/* <EnforcementsCalendar
+                          <EnforcementsCalendar
                             sendDateToParent={handleDateFromCalendar}
                             sendDayToParent={handleDayFromCalendar}
-                          /> */}
+                          />
                         </div>
                         <div>
                           <div className={styles.enforcementSelectContainer}>
