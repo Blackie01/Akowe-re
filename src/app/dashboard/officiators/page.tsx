@@ -55,21 +55,22 @@ const ManageOfficiators = () => {
 
   // get rank data from BE
   const ranksFromRedux:any = useSelector((state: RootState) => state.ranks.ranks);
-
+  const [loadingRanks, setLoadingRanks] = useState(true)
   useEffect(() => {
-    if (ranksFromRedux === null) {
+    // if (ranksFromRedux === null) {
       const getAllRanks = async () => {
         try {
           const endpointToGetRank = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rankings`;
           const getRanks = await axios.get(endpointToGetRank);
           dispatch(setRanks(getRanks.data));
+          setLoadingRanks(false)
         } catch (error) {
           console.error("error getting ranks", error);
         }
       };
       getAllRanks();
-    }
-  }, [ranksFromRedux, dispatch]);
+    // }
+  }, []);
 
   // state for the select
   const [rank, setRank] = React.useState("");
@@ -272,12 +273,11 @@ const ManageOfficiators = () => {
                         <option disabled selected value="">
                           What&apos;s their rank...
                         </option>
+                        {loadingRanks ? <Loading width={"1rem"} height={"1rem"}/> : ''}
                         {ranksFromRedux &&
                           ranksFromRedux.map((rank: any, index: number) => (
                             <option key={index}>{rank.name}</option>
                           ))}
-
-                        <option></option>
                       </select>
                     </div>
                   </div>
