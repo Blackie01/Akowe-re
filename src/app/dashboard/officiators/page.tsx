@@ -140,6 +140,7 @@ const ManageOfficiators = () => {
 
   // checking if a minimum of 5 officiators been entered
   const [disableSendButton, setDisableSendButton] = useState(true);
+  const [entriesLeft, setEntriesLeft] = useState<number>()
   const countOfOfficiators = useSelector(
     (state: RootState) => state.officiatorObject.collectOfficiatorObject.length
   );
@@ -147,6 +148,8 @@ const ManageOfficiators = () => {
     if (countOfOfficiators >= 5) {
       setDisableSendButton(false);
     }
+
+    setEntriesLeft(5 - countOfOfficiators)
   }, [countOfOfficiators]);
 
   // sending officiator data to the BE
@@ -171,7 +174,7 @@ const ManageOfficiators = () => {
     };
     console.log("data to send", JSON.stringify(dataToSend));
     try {
-      const endpointToSendDetailsToRoster = `${process.env.REACT_APP_API_URL}/rosters/`;
+      const endpointToSendDetailsToRoster = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rosters/`;
       const responseFromSendingToRoster = await axios.post(
         endpointToSendDetailsToRoster,
         dataToSend
@@ -234,8 +237,7 @@ const ManageOfficiators = () => {
   };
 
   return (
-    // <Dashboard>
-      <div>
+      <div className={styles.overallContainer}>
         <div>
           <h3 className={styles.title}>Manage Officiators</h3>
           <div onClick={handleDialogOpen} className={styles.createNew}>
@@ -393,6 +395,9 @@ const ManageOfficiators = () => {
                     )}
                   </div>
                 </section>
+                <div className={styles.messageContainer} style={{display: disableSendButton ? 'block' : 'none'}}>
+                  * minimum of {entriesLeft} entries remaining
+                </div>
                 <div className={styles.actionsContainer}>
                   <div
                     onClick={handleAddNewOfficiator}
@@ -434,21 +439,20 @@ const ManageOfficiators = () => {
               </div>
               <div className={styles.scrollContainer}>
                 <div id="target">
-                  {/* <Roster services={rosterData} /> */}
+                  <Roster services={rosterData} />
                 </div>
               </div>
 
               <div className={styles.feedbackContainer}>
-                {/* <Feedback /> */}
+                <Feedback />
               </div>
             </div>
           ) : (
             ""
           )}
-          <Roster services={services} />
+          {/* <Roster services={services} /> */}
         </div>
       </div>
-    // </Dashboard>
   );
 };
 
