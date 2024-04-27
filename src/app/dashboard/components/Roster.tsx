@@ -1,4 +1,5 @@
 // ServiceTable.js
+'use client'
 import React from 'react';
 import './roster.css'; 
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { ReactEventHandler, useState } from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import { useRouter } from "next/navigation";
 // import Intro from "../customComponents/intro";
@@ -18,9 +18,9 @@ const Login = () => {
 
   const router = useRouter()
   const dispatch = useDispatch();
-  const [username, setUsername] = useState();
-  const [parish, setParish] = useState()
-  const [email, setEmail] = useState();
+  const [username, setUsername] = useState<string>();
+  const [parish, setParish] = useState<string>()
+  const [email, setEmail] = useState<string>();
 
   const handleLogin = (e: any) => {
     e.preventDefault();

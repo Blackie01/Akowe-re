@@ -153,7 +153,7 @@ const ManageOfficiators = () => {
   }, [countOfOfficiators]);
 
   // sending officiator data to the BE
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const username = useSelector((state: RootState) => state.auth.name);
   const useremail = useSelector((state: RootState) => state.auth.email);
   const createdOfficiatorDetails = useSelector(

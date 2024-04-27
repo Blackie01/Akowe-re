@@ -27,7 +27,7 @@ const SideBar = () => {
         Akowe
       </Link>
       <div className="menuItems">
-        {menuItems.map((menu, index) => (
+        {menuItems && menuItems.map((menu, index) => (
           <div key={index}>
             <Link style={{ textDecoration: "none" }} href={menu.url}>
               <p className="menu">{menu.name}</p>
