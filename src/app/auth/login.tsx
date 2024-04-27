@@ -24,7 +24,7 @@ const Login = () => {
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    // dispatch(setAuthDetails({ name: username, parish: parish, email: email } as { name: any; parish: any; email: any; } & void));
+    dispatch(setAuthDetails({ name: username, parish: parish, email: email } as { name: any; parish: any; email: any; } & void));
     router.push("/dashboard/officiators");
   };
   return (

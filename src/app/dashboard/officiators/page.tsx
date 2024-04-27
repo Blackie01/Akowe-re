@@ -1,5 +1,5 @@
 'use client'
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Dashboard from "./dashboard";
 import styles from "./officiators.module.css";
 import { IconPlus, IconX, IconDownload } from "@tabler/icons-react";
