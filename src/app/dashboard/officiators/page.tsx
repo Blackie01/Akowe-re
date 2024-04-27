@@ -62,8 +62,11 @@ const ManageOfficiators = () => {
         try {
           const endpointToGetRank = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rankings`;
           const getRanks = await axios.get(endpointToGetRank);
-          dispatch(setRanks(getRanks.data));
-          setLoadingRanks(false)
+          console.log('getting ranks', getRanks)
+          if (getRanks.status == 200) {
+            dispatch(setRanks(getRanks.data));
+            setLoadingRanks(false)
+          }
         } catch (error) {
           console.error("error getting ranks", error);
         }
@@ -213,11 +216,7 @@ const ManageOfficiators = () => {
   // setting roster data
   const [rosterData, setRosterData] = useState(null);
 
-  // button used in testing to clear redux
-  // const handleReduxClear = () => {
-  //   dispatch(clearOfficiatorObject());
-  // };
-
+  // handle download button
   const downloadPDF = () => {
     const targetElement: any = document.getElementById("target");
     const pdf = new jsPDF("landscape");
@@ -273,12 +272,12 @@ const ManageOfficiators = () => {
                         <option disabled selected value="">
                           What&apos;s their rank...
                         </option>
-                        {loadingRanks ? <Loading width={"1rem"} height={"1rem"}/> : ''}
                         {ranksFromRedux &&
                           ranksFromRedux.map((rank: any, index: number) => (
                             <option key={index}>{rank.name}</option>
                           ))}
                       </select>
+                      <p style={{height: '0.8rem',fontSize: '0.7rem', textAlign: 'right'}}>{loadingRanks ? 'loading...' : ''}</p>
                     </div>
                   </div>
 
