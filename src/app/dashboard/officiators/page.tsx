@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useEffect, useState } from "react";
 // import Dashboard from "./dashboard";
 import styles from "./officiators.module.css";
@@ -21,6 +21,7 @@ import { jsPDF } from "jspdf";
 import { TransitionProps } from "@mui/material/transitions";
 import { RootState } from "@/app/redux/store";
 import services from "@/utils/data/servicesData";
+import OfficiatorInputDialog from "../components/officiatorInputDialog";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,121 +40,39 @@ const ManageOfficiators = () => {
   const handleDialogOpen = () => {
     setOpen(true);
   };
-  const handleDialogClose = () => {
-    setShowEnforcement(false);
-    setOpen(false);
-    setOfficiatorName("");
-    setConductOnWeekday(false);
-    setConductOnSunday(false);
-    setReadOnWeekday(false);
-    setReadOnSunday(false);
-    setPreachOnWeekday(false);
-    setPreachOnSunday(false);
-    setEnforcementDate("");
-    setEnforcementDay("");
-  };
 
-  // get rank data from BE
-  const ranksFromRedux:any = useSelector((state: RootState) => state.ranks.ranks);
-  const [loadingRanks, setLoadingRanks] = useState(true)
-  useEffect(() => {
-    // if (ranksFromRedux === null) {
-      const getAllRanks = async () => {
-        try {
-          const endpointToGetRank = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rankings`;
-          const getRanks = await axios.get(endpointToGetRank);
-          console.log('getting ranks', getRanks)
-          if (getRanks.status == 200) {
-            dispatch(setRanks(getRanks.data));
-            setLoadingRanks(false)
-          }
-        } catch (error) {
-          console.error("error getting ranks", error);
-        }
-      };
-      getAllRanks();
-    // }
-  }, []);
-
-  // state for the select
-  const [rank, setRank] = React.useState("");
-  const [officiation, setOfficition] = useState();
-
-  const handleRankChange = (event: any) => {
-    const selectedIndex = event.target.selectedIndex;
-    const selectedRankObject = ranksFromRedux[selectedIndex - 1];
-    setRank(selectedRankObject);
-  };
-
-  const handleOfficiationChange = (event: any) => {
-    setOfficition(event.target.value);
-  };
-
-  // collecting all details of single or multiple officiators
-  const [officiatorName, setOfficiatorName] = useState("");
-  const [conductOnWeekday, setConductOnWeekday] = useState<any>(false);
-  const [conductOnSunday, setConductOnSunday] = useState(false);
-  const [readOnWeekday, setReadOnWeekday] = useState(false);
-  const [readOnSunday, setReadOnSunday] = useState(false);
-  const [preachOnWeekday, setPreachOnWeekday] = useState(false);
-  const [preachOnSunday, setPreachOnSunday] = useState(false);
-  const [enforcementDate, setEnforcementDate] = useState("");
-  const [enforcementDay, setEnforcementDay] = useState("");
-  const [showEnforcement, setShowEnforcement] = useState(false);
-  const handleShowEnforcement = () => {
-    setShowEnforcement(!showEnforcement);
-  };
-
-  const handleDateFromCalendar = (date: any) => {
-    setEnforcementDate(date);
-  };
-
-  const handleDayFromCalendar = (day: any) => {
-    setEnforcementDay(day);
-  };
-
-  const createOfficiatorObject: any = {
-    id: Math.floor(Math.random() * 1000000),
-    name: officiatorName,
-    rank: rank,
-    can_conduct_on_weekdays: conductOnWeekday,
-    can_conduct_on_sundays: conductOnSunday,
-    can_read_on_weekdays: readOnWeekday,
-    can_read_on_sundays: readOnSunday,
-    can_preach_on_weekdays: preachOnWeekday,
-    can_preach_on_sundays: preachOnSunday,
-    enforcements: showEnforcement
-      ? [
-          {
-            date: enforcementDate,
-            service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
-            officiation: officiation,
-          },
-        ]
-      : null,
-  };
-
-  // use this object to collect multiple officiators and pass them to the redux. it's the one in redux that is then sent with the endpoint below
-  const handleAddNewOfficiator = () => {
-    dispatch(setOfficiatorObject(createOfficiatorObject));
-    handleDialogClose();
-    setTimeout(() => {
-      setOpen(true);
-    }, 500);
+  const handleDialogClose = (data: boolean) => {
+    // setShowEnforcement(false);
+    setOpen(data);
+    // setOfficiatorName("");
+    // setConductOnWeekday(false);
+    // setConductOnSunday(false);
+    // setReadOnWeekday(false);
+    // setReadOnSunday(false);
+    // setPreachOnWeekday(false);
+    // setPreachOnSunday(false);
+    // setEnforcementDate("");
+    // setEnforcementDay("");
   };
 
   // checking if a minimum of 5 officiators been entered
   const [disableSendButton, setDisableSendButton] = useState(true);
-  const [entriesLeft, setEntriesLeft] = useState<number>()
+  const [entriesLeft, setEntriesLeft] = useState<number>();
+  const [showEntries, setShowEntries] = useState<boolean>(false);
   const countOfOfficiators = useSelector(
     (state: RootState) => state.officiatorObject.collectOfficiatorObject.length
   );
+
   useEffect(() => {
+    if (countOfOfficiators > 0) {
+      setShowEntries(true);
+    }
+
     if (countOfOfficiators >= 5) {
       setDisableSendButton(false);
     }
 
-    setEntriesLeft(5 - countOfOfficiators)
+    setEntriesLeft(5 - countOfOfficiators);
   }, [countOfOfficiators]);
 
   // sending officiator data to the BE
@@ -165,7 +84,7 @@ const ManageOfficiators = () => {
   );
 
   const handleSaveToRoster = async () => {
-    dispatch(setOfficiatorObject(createOfficiatorObject));
+    // dispatch(setOfficiatorObject(createOfficiatorObject));
 
     setLoading(true);
     const dataToSend = {
@@ -183,20 +102,19 @@ const ManageOfficiators = () => {
         endpointToSendDetailsToRoster,
         dataToSend
       );
-      console.log(
-        "confirming roster response",
-        responseFromSendingToRoster
-      );
+      console.log("confirming roster response", responseFromSendingToRoster);
       if (responseFromSendingToRoster.status === 201) {
         setLoading(false);
         dispatch(
           newNotification({
-            message: "Your roster has been successfully created.",
+            message: "Your roster has been successfully generated.",
             backgroundColor: "success",
           })
         );
         setRosterData(responseFromSendingToRoster.data.roster);
-        handleDialogClose();
+        // handleDialogClose();
+        setOpen(false);
+        setShowEntries(false);
         dispatch(clearOfficiatorObject());
       }
     } catch (error) {
@@ -204,11 +122,12 @@ const ManageOfficiators = () => {
       setLoading(false);
       dispatch(
         newNotification({
-          message: "There was an error while saving to Roster. Try again.",
+          message: "There was an error while generating Roster. Try again.",
           backgroundColor: "failure",
         })
       );
-      handleDialogClose();
+      // handleDialogClose();
+      setOpen(false);
       dispatch(clearOfficiatorObject());
     }
   };
@@ -237,221 +156,115 @@ const ManageOfficiators = () => {
   };
 
   return (
-      <div className={styles.overallContainer}>
-        <div>
-          <h3 className={styles.title}>Manage Officiators</h3>
-          <div onClick={handleDialogOpen} className={styles.createNew}>
-            Create new officiator
-          </div>
-          {/* <p style={{ cursor: "pointer" }} onClick={handleReduxClear}>
+    <div className={styles.overallContainer}>
+      <div>
+        <h3 className={styles.title}>Create A Roster</h3>
+        <div onClick={handleDialogOpen} className={styles.createNew}>
+          Create an officiation
+        </div>
+        {/* <p style={{ cursor: "pointer" }} onClick={handleReduxClear}>
             Clear redu
           </p> */}
-          <div>
-            <Dialog
-              open={open}
-              TransitionComponent={Transition}
-            >
-              {/* <DialogTitle>{"Create new officiator"}</DialogTitle> */}
-              <DialogContent style={{ position: "relative" }}>
-                <IconX
-                  className={styles.closeDialog}
-                  onClick={handleDialogClose}
-                />
-                <section className={styles.dialogForm}>
-                  <p className={styles.dialogTitles}>Create new officiator</p>
-                  <div className={styles.persona}>
-                    <div className={styles.personaInputContainer}>
-                      <input
-                        type="text"
-                        placeholder="Enter officiator name"
-                        onChange={(e) => setOfficiatorName(e.target.value)}
-                      />
-                    </div>
-                    <div className={styles.personaSelectContainer}>
-                      <select onChange={handleRankChange}>
-                        <option disabled selected value="">
-                          What&apos;s their rank...
-                        </option>
-                        {ranksFromRedux &&
-                          ranksFromRedux.map((rank: any, index: number) => (
-                            <option key={index}>{rank.name}</option>
-                          ))}
-                      </select>
-                      <p style={{height: '0.8rem',fontSize: '0.7rem', textAlign: 'right'}}>{loadingRanks ? 'loading...' : ''}</p>
-                    </div>
-                  </div>
+        <div>
+          <Dialog open={open} TransitionComponent={Transition}>
+            {/* <DialogTitle>{"Create new officiator"}</DialogTitle> */}
+            <DialogContent style={{ position: "relative" }}>
+              <IconX
+                className={styles.closeDialog}
+                onClick={() => setOpen(false)}
+              />
 
-                  <div className={styles.checkboxOverallContainer}>
-                    <p className={styles.dialogTitles}>Customize</p>
-                    <div className={styles.customizationToSelect}>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can conduct on weekdays</label>
-                        <input
-                          value={conductOnWeekday}
-                          type="checkbox"
-                          onChange={(e) =>
-                            setConductOnWeekday(e.target.checked)
-                          }
-                        />
-                      </div>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can conduct on Sundays</label>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => setConductOnSunday(e.target.checked)}
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.customizationToSelect}>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can read on weekdays</label>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => setReadOnWeekday(e.target.checked)}
-                        />
-                      </div>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can read on Sundays</label>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => setReadOnSunday(e.target.checked)}
-                        />
-                      </div>
-                    </div>
-                    <div className={styles.customizationToSelect}>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can preach on weekdays</label>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => setPreachOnWeekday(e.target.checked)}
-                        />
-                      </div>
-                      <div className={styles.individualCheckboxContainer}>
-                        <label>Can preach on Sundays</label>
-                        <input
-                          type="checkbox"
-                          onChange={(e) => setPreachOnSunday(e.target.checked)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={styles.addEnforcements}>
-                    <p
-                      className={styles.enforcementTitle}
-                      onClick={handleShowEnforcement}
-                    >
-                      <span>{showEnforcement ? "Remove" : "Add"}</span>{" "}
-                      Enforcements{" "}
-                      <span style={{ color: "red", fontSize: "0.9rem" }}>
-                        {" "}
-                        (optional)
-                      </span>
-                    </p>
-                    {showEnforcement ? (
-                      <div className={styles.enforcementSelection}>
-                        <div>
-                          <EnforcementsCalendar
-                            sendDateToParent={handleDateFromCalendar}
-                            sendDayToParent={handleDayFromCalendar}
-                          />
-                        </div>
-                        <div>
-                          <div className={styles.enforcementSelectContainer}>
-                            {enforcementDay === "Sun" ? (
-                              <select onChange={handleOfficiationChange}>
-                                <option disabled selected value="">
-                                  Choose officiation type...
-                                </option>
-
-                                <option value="conductor">Conductor</option>
-                                <option value="first_lesson_reader">
-                                  First Lesson Reader
-                                </option>
-                                <option value="second_lesson_reader">
-                                  Second Lesson Reader
-                                </option>
-                                <option value="preacher">Preacher</option>
-                              </select>
-                            ) : (
-                              <select onChange={handleOfficiationChange}>
-                                <option disabled selected value="">
-                                  Choose officiation type...
-                                </option>
-
-                                <option value="conductor">Conductor</option>
-                                <option value="first_lesson_reader">
-                                  First Lesson Reader
-                                </option>
-                                <option value="preacher">Preacher</option>
-                              </select>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </section>
-                <div className={styles.messageContainer} style={{display: disableSendButton ? 'block' : 'none'}}>
-                  * minimum of {entriesLeft} entries remaining
-                </div>
-                <div className={styles.actionsContainer}>
-                  <div
-                    onClick={handleAddNewOfficiator}
-                    className={styles.addNew}
-                  >
-                    <IconPlus />
-                    <p>Add new officiator</p>
-                  </div>
-                  <button
-                    onClick={handleSaveToRoster}
-                    className={styles.saveToRoster}
-                    disabled={disableSendButton}
-                    style={{
-                      opacity: disableSendButton ? 0.5 : 1,
-                      cursor: disableSendButton ? "" : "pointer",
-                    }}
-                  >
-                    {loading ? (
-                      <Loading width={"1rem"} height={"1rem"} />
-                    ) : (
-                      "Save to Roster"
-                    )}
-                  </button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-
-        <div className={styles.displayAllOfficiators}>
-          {rosterData && rosterData !== null ? (
-            <div>
-              <div className={styles.rosterHeader}>
-                <h3 className={styles.title}>Generated roster</h3>
-                <IconDownload
-                  className={styles.downloadIcon}
-                  onClick={downloadPDF}
-                />
-              </div>
-              <div className={styles.scrollContainer}>
-                <div id="target">
-                  <Roster services={rosterData} />
-                </div>
-              </div>
-
-              <div className={styles.feedbackContainer}>
-                <Feedback />
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
-          {/* <Roster services={services} /> */}
+              <OfficiatorInputDialog dialogCloseTrigger={handleDialogClose} />
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
+
+      {showEntries ? (
+        <div className={styles.entryPreview}>
+          <h3 className={styles.title}>Preview Your Entries</h3>
+          <div className={styles.countContainer}>
+            <p
+              className={styles.messageContainer}
+              style={{ display: disableSendButton ? "block" : "none" }}
+            >
+              * minimum of {entriesLeft} entries remaining to generate a roster
+            </p>
+            <p className={styles.previewAddNew} onClick={handleDialogOpen}>
+              <IconPlus />
+              Add new
+            </p>
+          </div>
+
+          <div className={styles.tableWrapper}>
+            <table className={styles.previewTable}>
+              <thead>
+                <tr>
+                  <th>s/n</th>
+                  <th>Rank</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {createdOfficiatorDetails &&
+                  createdOfficiatorDetails.map((item: any, index: any) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{item?.rank.name}</td>
+                      <td>{item.name}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <div className={styles.actionsContainer}>
+            <button
+              onClick={handleSaveToRoster}
+              className={styles.saveToRoster}
+              disabled={disableSendButton}
+              style={{
+                opacity: disableSendButton ? 0.5 : 1,
+                cursor: disableSendButton ? "" : "pointer",
+              }}
+            >
+              {loading ? (
+                <Loading width={"1rem"} height={"1rem"} />
+              ) : (
+                "Generate Roster"
+              )}
+            </button>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
+      <div className={styles.displayAllOfficiators}>
+        {rosterData && rosterData !== null ? (
+          <div>
+            <div className={styles.rosterHeader}>
+              <h3 className={styles.title}>Generated roster</h3>
+              <IconDownload
+                className={styles.downloadIcon}
+                onClick={downloadPDF}
+              />
+            </div>
+            <div className={styles.scrollContainer}>
+              <div id="target">
+                <Roster services={rosterData} />
+              </div>
+            </div>
+
+            <div className={styles.feedbackContainer}>
+              <Feedback />
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+        {/* <Roster services={services} /> */}
+      </div>
+    </div>
   );
 };
 

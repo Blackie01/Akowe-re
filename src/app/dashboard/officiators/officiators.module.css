@@ -24,7 +24,11 @@
 }
 
 .addNew {
-  margin-top: 0;
+  margin: auto;
+  margin-top: 1rem;
+  gap: 0.5rem;
+  background-color: transparent;
+  align-items: unset;
 }
 
 .addNew p {
@@ -147,6 +151,7 @@
 .enforcementTitle {
   cursor: pointer;
   font-weight: 600;
+  width: max-content;
 
 }
 
@@ -176,19 +181,32 @@
   outline: none;
 }
 
+.countContainer {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
 .messageContainer {
-  margin-top: 1.5rem;
-  height: 1rem;
+  /* margin-top: 0.5rem; */
+  /* height: 1rem; */
   font-size: 0.8rem;
-  text-align: center;
+  /* text-align: center; */
   color: red;
+}
+
+.errorText {
+  color: red;
+  font-size: 0.8rem;
+  height: 1rem;
 }
 
 .actionsContainer {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   gap: 1rem;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
 }
 
 .displayAllOfficiators {
@@ -214,4 +232,40 @@
 .scrollContainer {
   overflow-x: scroll;
 border: 1px solid var(--brand-color);
+}
+
+.entryPreview {
+  margin-top: 5rem;
+}
+
+.tableWrapper {
+  margin-top: 2rem;
+}
+
+.previewTable {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+.previewTable th,
+.previewTable td {
+  border: 1px solid #ddd;
+  border: 1px solid var(--brand-color);
+  padding: 1rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.previewTable th {
+  background-color: var(--brand-color);
+  color: #fff;
+
+  font-size: 14px;
+}
+
+.previewAddNew {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.9rem;
 }

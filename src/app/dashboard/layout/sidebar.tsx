@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
 import React from "react";
-import "./sidebar.css";
+import styles from "./sidebar.module.css";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { IconMapPin } from "@tabler/icons-react";
@@ -13,30 +13,38 @@ const SideBar = () => {
       name: "Officiators",
       url: "/dashboard/officiators",
     },
+    {
+      name: "Feedback",
+      url: "/dashboard/feedback",
+    },
   ];
 
-  const parish = useSelector((state: RootState) => state.auth.parish)
+  const parish = useSelector((state: RootState) => state.auth.parish);
 
   return (
-    <section className="overallContainer">
+    <section className={styles.overallContainer}>
       <Link
         style={{ textDecoration: "none", color: "#fff" }}
         href="/"
-        className="sidebarLogo"
+        className={styles.sidebarLogo}
       >
         Akowe
       </Link>
-      <div className="menuItems">
-        {menuItems && menuItems.map((menu, index) => (
-          <div key={index}>
-            <Link style={{ textDecoration: "none" }} href={menu.url}>
-              <p className="menu">{menu.name}</p>
-            </Link>
-          </div>
-        ))}
+      <div className={styles.menuItems}>
+        {menuItems &&
+          menuItems.map((menu, index) => (
+            <div key={index}>
+              <Link style={{ textDecoration: "none" }} href={menu.url}>
+                <p className={styles.menu}>{menu.name}</p>
+              </Link>
+            </div>
+          ))}
       </div>
-      <div className="parishContainer">
-       <span><IconMapPin/></span> <p>{parish}</p>
+      <div className={styles.parishContainer}>
+        <span>
+          <IconMapPin />
+        </span>{" "}
+        <p>{parish}</p>
       </div>
     </section>
   );

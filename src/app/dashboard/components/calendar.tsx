@@ -60,7 +60,7 @@ export default function EnforcementsCalendar({
 }: any) {
   const requestAbortController = React.useRef(null);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
+  // const [highlightedDays, setHighlightedDays] = React.useState([1, 2, 15]);
 
   const fetchHighlightedDays = (date: Dayjs) => {
     const controller = new AbortController();
@@ -68,7 +68,7 @@ export default function EnforcementsCalendar({
       signal: controller.signal,
     })
       .then(({ daysToHighlight }: any) => {
-        setHighlightedDays(daysToHighlight);
+        // setHighlightedDays(daysToHighlight);
         setIsLoading(false);
       })
       .catch((error) => {
@@ -94,7 +94,7 @@ export default function EnforcementsCalendar({
     }
 
     setIsLoading(true);
-    setHighlightedDays([]);
+    // setHighlightedDays([]);
     fetchHighlightedDays(date);
   };
 
@@ -137,7 +137,7 @@ export default function EnforcementsCalendar({
         }}
         slotProps={{
           day: {
-            highlightedDays,
+            // highlightedDays,
           } as any,
         }}
       />
