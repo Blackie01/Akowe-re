@@ -23,6 +23,7 @@ import { RootState } from "@/app/redux/store";
 import services from "@/utils/data/servicesData";
 import OfficiatorInputDialog from "../components/officiatorInputDialog";
 
+
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
@@ -42,17 +43,7 @@ const ManageOfficiators = () => {
   };
 
   const handleDialogClose = (data: boolean) => {
-    // setShowEnforcement(false);
     setOpen(data);
-    // setOfficiatorName("");
-    // setConductOnWeekday(false);
-    // setConductOnSunday(false);
-    // setReadOnWeekday(false);
-    // setReadOnSunday(false);
-    // setPreachOnWeekday(false);
-    // setPreachOnSunday(false);
-    // setEnforcementDate("");
-    // setEnforcementDay("");
   };
 
   // checking if a minimum of 5 officiators been entered
@@ -128,7 +119,7 @@ const ManageOfficiators = () => {
       );
       // handleDialogClose();
       setOpen(false);
-      dispatch(clearOfficiatorObject());
+      // dispatch(clearOfficiatorObject());
     }
   };
 
@@ -141,7 +132,7 @@ const ManageOfficiators = () => {
     const pdf = new jsPDF("landscape");
 
     html2canvas(targetElement, { width: 1280, height: 960 }).then((canvas) => {
-      const imgData = canvas.toDataURL("img/png");
+      const imgData = canvas.toDataURL("img/png", 0.7);
       const componentWidth = pdf.internal.pageSize.getWidth();
       const componentHeight = pdf.internal.pageSize.getHeight();
       pdf.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);

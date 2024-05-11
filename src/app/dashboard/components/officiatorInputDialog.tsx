@@ -8,7 +8,7 @@ import { setRanks } from "@/app/redux/ranksSlice";
 import axios from "axios";
 import { setOfficiatorObject } from "@/app/redux/officiatorObjectsSlice";
 import EnforcementsCalendar from "./calendar";
-import { IconPlus } from "@tabler/icons-react";
+import { IconPlus, IconX } from "@tabler/icons-react";
 import { newNotification } from "@/app/redux/notificationSlice";
 
 const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
@@ -61,7 +61,24 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
   const [preachOnSunday, setPreachOnSunday] = useState(false);
   const [enforcementDate, setEnforcementDate] = useState("");
   const [enforcementDay, setEnforcementDay] = useState("");
+  const [enforcementArray, setEnformentArray] = useState<any>([]);
   const [showEnforcement, setShowEnforcement] = useState(false);
+
+  const addNewEnforcement = () => {
+    const newEnforcement = {
+      date: enforcementDate,
+      service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
+      officiation: officiation,
+    };
+    setEnformentArray([...enforcementArray, newEnforcement]);
+  };
+
+  const removeEnforcement = (index: number) => {
+    const updatedEnforcement = [...enforcementArray];
+    updatedEnforcement.splice(index, 1);
+    setEnformentArray(updatedEnforcement);
+  };
+
   const [formErrors, setFormErrors] = useState({
     officiatorName: false,
     rank: false,
@@ -81,7 +98,7 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    addNewEnforcement()
     const errors = {
       officiatorName: officiatorName === "",
       rank: rank === "",
@@ -118,15 +135,16 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
     can_read_on_sundays: readOnSunday,
     can_preach_on_weekdays: preachOnWeekday,
     can_preach_on_sundays: preachOnSunday,
-    enforcements: showEnforcement
-      ? [
-          {
-            date: enforcementDate,
-            service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
-            officiation: officiation,
-          },
-        ]
-      : null,
+    enforcements: enforcementArray.length > 0 ? enforcementArray : null,
+    // enforcements: showEnforcement
+    //   ? [
+    //       {
+    //         date: enforcementDate,
+    //         service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
+    //         officiation: officiation,
+    //       },
+    //     ]
+    //   : null,
   };
 
   // use this object to collect multiple officiators and pass them to the redux. it's the one in redux that is then sent with the endpoint
@@ -139,10 +157,6 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
       })
     );
     dialogCloseTrigger(false);
-    // handleDialogClose();
-    // setTimeout(() => {
-    //   setOpen(true);
-    // }, 500);
   };
 
   return (
@@ -283,6 +297,28 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
                     <option value="preacher">Preacher</option>
                   </select>
                 )}
+              </div>
+              <div
+                onClick={addNewEnforcement}
+                className={styles.duplicateEnforcement}
+              >
+                <IconPlus /> Add another enforcement
+              </div>
+              <div className={styles.enforcementArraySection}>
+                {enforcementArray.map((item: any, index: any) => (
+                  <div key={index} className={styles.enforcementPill}>
+                    <IconX
+                      className={styles.deletePill}
+                      size={24}
+                      onClick={() => removeEnforcement(index)}
+                    />
+                    <p style={{ display: "flex", gap: "0.5rem" }}>
+                      <span>Date: {item.date}</span>
+                      <span>({item.service_type})</span>
+                    </p>
+                    <p>Officiation: {item.officiation}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
