@@ -74,7 +74,7 @@
 
 .closeDialog:hover {
   opacity: 0.6;
-  background-color: #a0caca;
+  background-color: #e7eeee;
 }
 
 .dialogForm h2 {
@@ -128,7 +128,6 @@
 .dialogTitles {
   font-weight: bold;
   color: var(--brand-color);
-  margin-bottom: 1rem;
 }
 
 .customizationToSelect {
@@ -146,6 +145,7 @@
 
 .addEnforcements {
   margin-top: 2rem;
+  position: relative;
 }
 
 .enforcementTitle {
@@ -188,10 +188,7 @@
 }
 
 .messageContainer {
-  /* margin-top: 0.5rem; */
-  /* height: 1rem; */
   font-size: 0.8rem;
-  /* text-align: center; */
   color: red;
 }
 
@@ -203,7 +200,6 @@
 
 .actionsContainer {
   display: flex;
-  /* justify-content: center; */
   gap: 1rem;
   margin-top: 2rem;
 }
@@ -217,11 +213,36 @@
   gap: 2rem;
   align-items: center;
   margin-bottom: 1rem;
+  width: max-content;
+  position: relative;
 }
 
 .downloadIcon:hover {
   color: var(--brand-color);
   cursor: pointer;
+}
+
+.downloadOptionsContainer {
+  position: absolute;
+  background-color: #fff;
+  bottom: -200%;
+  right: -90%;
+  padding: 2px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0, 124, 124, 0.1);
+}
+
+.downloadOptionsContainer p {
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.downloadOptionsContainer p:hover {
+  background-color: #e7eeee;
 }
 
 .feedbackContainer {
@@ -299,6 +320,7 @@
   cursor: pointer;
   padding: 0.3rem;
   border-radius: 50%;
+  transition: all 0.3s ease-in-out;
 }
 
 .deletePill:hover {

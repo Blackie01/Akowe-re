@@ -13,13 +13,15 @@ import { newNotification } from "@/app/redux/notificationSlice";
 
 const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
   const dispatch = useDispatch();
+
   // get rank data from BE
   const ranksFromRedux: any = useSelector(
     (state: RootState) => state.ranks.ranks
   );
+
   const [loadingRanks, setLoadingRanks] = useState(true);
+
   useEffect(() => {
-    // if (ranksFromRedux === null) {
     const getAllRanks = async () => {
       try {
         const endpointToGetRank = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rankings`;
@@ -34,7 +36,6 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
       }
     };
     getAllRanks();
-    // }
   }, []);
 
   // state for the select
@@ -64,26 +65,12 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
   const [enforcementArray, setEnformentArray] = useState<any>([]);
   const [showEnforcement, setShowEnforcement] = useState(false);
 
-  const addNewEnforcement = () => {
-    const newEnforcement = {
-      date: enforcementDate,
-      service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
-      officiation: officiation,
-    };
-    setEnformentArray([...enforcementArray, newEnforcement]);
-  };
-
-  const removeEnforcement = (index: number) => {
-    const updatedEnforcement = [...enforcementArray];
-    updatedEnforcement.splice(index, 1);
-    setEnformentArray(updatedEnforcement);
-  };
-
   const [formErrors, setFormErrors] = useState({
     officiatorName: false,
     rank: false,
     checkboxes: false,
   });
+
   const handleShowEnforcement = () => {
     setShowEnforcement(!showEnforcement);
   };
@@ -96,9 +83,40 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
     setEnforcementDay(day);
   };
 
+  const [enforcementMsg, setEnforcementMsg] = useState("");
+
+  const addNewEnforcement = () => {
+    if (enforcementDate == "") {
+      setEnforcementMsg("Date is required");
+      setTimeout(() => {
+        setEnforcementMsg("");
+      }, 3000);
+      return;
+    } else if (officiation == null || undefined) {
+      setEnforcementMsg("Officiation is required");
+      setTimeout(() => {
+        setEnforcementMsg("");
+      }, 3000);
+      return;
+    } else {
+      const newEnforcement = {
+        date: enforcementDate,
+        service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
+        officiation: officiation,
+      };
+      setEnformentArray([...enforcementArray, newEnforcement]);
+    }
+  };
+
+  const removeEnforcement = (index: number) => {
+    const updatedEnforcement = [...enforcementArray];
+    updatedEnforcement.splice(index, 1);
+    setEnformentArray(updatedEnforcement);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    addNewEnforcement()
+    // addNewEnforcement()
     const errors = {
       officiatorName: officiatorName === "",
       rank: rank === "",
@@ -136,15 +154,6 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
     can_preach_on_weekdays: preachOnWeekday,
     can_preach_on_sundays: preachOnSunday,
     enforcements: enforcementArray.length > 0 ? enforcementArray : null,
-    // enforcements: showEnforcement
-    //   ? [
-    //       {
-    //         date: enforcementDate,
-    //         service_type: enforcementDay === "Sun" ? "sunday" : "weekday",
-    //         officiation: officiation,
-    //       },
-    //     ]
-    //   : null,
   };
 
   // use this object to collect multiple officiators and pass them to the redux. it's the one in redux that is then sent with the endpoint
@@ -161,7 +170,9 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
 
   return (
     <form className={styles.dialogForm} onSubmit={handleSubmit}>
-      <p className={styles.dialogTitles}>Create new officiation</p>
+      <p className={styles.dialogTitles} style={{ marginBottom: "1rem" }}>
+        Create new officiation
+      </p>
       <div className={styles.persona}>
         <div className={styles.personaInputContainer}>
           <input
@@ -170,7 +181,6 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
             placeholder="Enter officiator name"
             onChange={(e) => setOfficiatorName(e.target.value)}
           />
-          {/* adding form errors, incase default required trigger fails */}
           {formErrors.officiatorName && (
             <p className={styles.errorText}>Officiator name is required.</p>
           )}
@@ -197,7 +207,21 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
       </div>
 
       <div className={styles.checkboxOverallContainer}>
-        <p className={styles.dialogTitles}>Set permissions</p>
+        <div
+          style={{
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          <p className={styles.dialogTitles}>Set permissions</p>
+          {formErrors.checkboxes && (
+            <p className={styles.errorText}>
+              Please select at least one permission.
+            </p>
+          )}
+        </div>
         <div className={styles.customizationToSelect}>
           <div className={styles.individualCheckboxContainer}>
             <label>Can conduct on weekdays</label>
@@ -248,16 +272,28 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
           </div>
         </div>
       </div>
-      {formErrors.checkboxes && (
-        <p className={styles.errorText}>
-          Please select at least one permission.
-        </p>
-      )}
 
       <div className={styles.addEnforcements}>
-        <p className={styles.enforcementTitle} onClick={handleShowEnforcement}>
-          <span>{showEnforcement ? "Remove" : "Add"}</span> Enforcements{" "}
-          <span style={{ color: "red", fontSize: "0.9rem" }}> (optional)</span>
+        <p className={styles.enforcementTitle}>
+          <span onClick={handleShowEnforcement}>
+            {showEnforcement ? "Remove" : "Add"} Enforcements
+          </span>
+          <span style={{ color: "red", fontSize: "0.9rem", cursor: "default" }}>
+            {" "}
+            (optional)
+          </span>
+          <span
+            style={{
+              color: "#FF8C00",
+              fontSize: "0.8rem",
+              cursor: "default",
+              position: "absolute",
+              right: "0",
+              marginTop: "0.3rem",
+            }}
+          >
+            {enforcementMsg}
+          </span>
         </p>
         {showEnforcement ? (
           <div className={styles.enforcementSelection}>
@@ -302,7 +338,7 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
                 onClick={addNewEnforcement}
                 className={styles.duplicateEnforcement}
               >
-                <IconPlus /> Add another enforcement
+                <IconPlus /> Save enforcement
               </div>
               <div className={styles.enforcementArraySection}>
                 {enforcementArray.map((item: any, index: any) => (
@@ -327,15 +363,7 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
         )}
       </div>
 
-      <button
-        type="submit"
-        className={styles.addNew}
-        // disabled={disableSaveButton}
-        // style={{
-        //   opacity: disableSaveButton ? 0.5 : 1,
-        //   cursor: disableSaveButton ? "" : "pointer",
-        // }}
-      >
+      <button type="submit" className={styles.addNew}>
         <IconPlus />
         <p>Save entry</p>
       </button>

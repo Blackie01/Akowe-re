@@ -22,7 +22,9 @@ import { TransitionProps } from "@mui/material/transitions";
 import { RootState } from "@/app/redux/store";
 import services from "@/utils/data/servicesData";
 import OfficiatorInputDialog from "../components/officiatorInputDialog";
-
+import { saveAs } from "file-saver";
+import { Document, Paragraph, Packer, TextRun } from "docx";
+import Docxtemplater from 'docxtemplater';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -131,20 +133,69 @@ const ManageOfficiators = () => {
     const targetElement: any = document.getElementById("target");
     const pdf = new jsPDF("landscape");
 
-    html2canvas(targetElement, { width: 1280, height: 960 }).then((canvas) => {
-      const imgData = canvas.toDataURL("img/png", 0.7);
-      const componentWidth = pdf.internal.pageSize.getWidth();
-      const componentHeight = pdf.internal.pageSize.getHeight();
-      pdf.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
-      pdf.save("roster.pdf");
-    });
-    dispatch(
-      newNotification({
-        message: "Download complete.",
-        backgroundColor: "success",
-      })
-    );
+    try {
+      html2canvas(targetElement, { width: 1280, height: 960 }).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL("img/png", 0.7);
+          const componentWidth = pdf.internal.pageSize.getWidth();
+          const componentHeight = pdf.internal.pageSize.getHeight();
+          pdf.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
+          pdf.save("roster.pdf");
+        }
+      );
+      dispatch(
+        newNotification({
+          message: "Download complete.",
+          backgroundColor: "success",
+        })
+      );
+    } catch (error) {
+      // console.error("Error creating document:", error);
+      dispatch(
+        newNotification({
+          message: "Error downloading file. Please try again.",
+          backgroundColor: "failure",
+        })
+      );
+    }
   };
+
+  const downloadDocxFile = async () => {
+    const targetElement: any = document.getElementById("target");
+
+    try {
+      const doc = new Document({
+        sections: [
+          {
+            properties: {},
+            children: [
+              new Paragraph({
+                children: [new TextRun(targetElement)],
+              }),
+            ],
+          },
+        ],
+      });
+      const buffer = await Packer.toBuffer(doc);
+      saveAs(new Blob([buffer]), "roster.docx");
+      dispatch(
+        newNotification({
+          message: "Download complete.",
+          backgroundColor: "success",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        newNotification({
+          message: "Error downloading file. Please try again.",
+          backgroundColor: "failure",
+        })
+      );
+    }
+  };
+
+  const [showDownloadOptions, setShowDownloadOptions] =
+    useState<boolean>(false);
 
   return (
     <div className={styles.overallContainer}>
@@ -231,29 +282,34 @@ const ManageOfficiators = () => {
       )}
 
       <div className={styles.displayAllOfficiators}>
-        {rosterData && rosterData !== null ? (
-          <div>
-            <div className={styles.rosterHeader}>
-              <h3 className={styles.title}>Generated roster</h3>
-              <IconDownload
-                className={styles.downloadIcon}
-                onClick={downloadPDF}
-              />
-            </div>
-            <div className={styles.scrollContainer}>
-              <div id="target">
-                <Roster services={rosterData} />
+        {/* {rosterData && rosterData !== null ? ( */}
+        <div>
+          <div className={styles.rosterHeader}>
+            <h3 className={styles.title}>Generated roster</h3>
+            <IconDownload
+              className={styles.downloadIcon}
+              onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+            />
+            {showDownloadOptions && (
+              <div className={styles.downloadOptionsContainer}>
+                <p onClick={downloadPDF}>Download as .pdf</p>
+                <p onClick={downloadDocxFile}>Download as .docx</p>
               </div>
-            </div>
-
-            <div className={styles.feedbackContainer}>
-              <Feedback />
+            )}
+          </div>
+          <div className={styles.scrollContainer}>
+            <div id="target">
+              <Roster services={rosterData} />
             </div>
           </div>
-        ) : (
-          ""
-        )}
-        {/* <Roster services={services} /> */}
+
+          <div className={styles.feedbackContainer}>
+            <Feedback />
+          </div>
+        </div>
+        {/* // ) : (
+        //   ""
+        // )} */}
       </div>
     </div>
   );

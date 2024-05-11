@@ -1,5 +1,8 @@
 :root {
+  --brand-color: rgb(0, 124, 124);
+
   --brand-color: #007C7C;
+
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
