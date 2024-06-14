@@ -190,12 +190,15 @@
 .messageContainer {
   font-size: 0.8rem;
   color: red;
+  opacity: 0.7;
 }
 
 .errorText {
   color: red;
   font-size: 0.8rem;
   height: 1rem;
+  opacity: 0.7;
+
 }
 
 .actionsContainer {
@@ -256,6 +259,22 @@
 
 .entryPreview {
   margin-top: 5rem;
+}
+
+.entryPreviewHeader {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.missingPermissions {
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  color: red;
+  opacity: 0.7;
+
 }
 
 .tableWrapper {

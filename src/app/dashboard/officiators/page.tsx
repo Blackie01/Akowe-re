@@ -40,6 +40,7 @@ const ManageOfficiators = () => {
     setOpen(data);
   };
 
+
   // checking if a minimum of 5 officiators been entered
   const [disableSendButton, setDisableSendButton] = useState(true);
   const [entriesLeft, setEntriesLeft] = useState<number>();
@@ -155,6 +156,37 @@ const ManageOfficiators = () => {
   const [showDownloadOptions, setShowDownloadOptions] =
     useState<boolean>(false);
 
+  // checking if each permission is selected at least once
+  let hasConductOnWeekday = false;
+  let hasConductOnSunday = false;
+  let hasReadOnWeekday = false;
+  let hasReadOnSunday = false;
+  let hasPreachOnWeekday = false;
+  let hasPreachOnSunday = false;
+
+  createdOfficiatorDetails.forEach((item: any) => {
+    if (item.can_conduct_on_weekdays) hasConductOnWeekday = true;
+    if (item.can_conduct_on_sundays) hasConductOnSunday = true;
+    if (item.can_read_on_weekdays) hasReadOnWeekday = true;
+    if (item.can_read_on_sundays) hasReadOnSunday = true;
+    if (item.can_preach_on_weekdays) hasPreachOnWeekday = true;
+    if (item.can_preach_on_sundays) hasPreachOnSunday = true;
+  });
+
+  const missingPermissions = [];
+  if (!hasConductOnWeekday) missingPermissions.push("conduct on weekdays");
+  if (!hasConductOnSunday) missingPermissions.push("conduct on Sundays");
+  if (!hasReadOnWeekday) missingPermissions.push("read on weekdays");
+  if (!hasReadOnSunday) missingPermissions.push("read on Sundays");
+  if (!hasPreachOnWeekday) missingPermissions.push("preach on weekdays");
+  if (!hasPreachOnSunday) missingPermissions.push("preach on Sundays");
+
+  useEffect(() => {
+    if (missingPermissions.length > 0) {
+      setDisableSendButton(true)
+    }
+  }, [missingPermissions])
+
   return (
     <div className={styles.overallContainer}>
       <div>
@@ -180,19 +212,31 @@ const ManageOfficiators = () => {
 
       {showEntries ? (
         <div className={styles.entryPreview}>
-          <h3 className={styles.title}>Preview Your Entries</h3>
-          <div className={styles.countContainer}>
-            <p
-              className={styles.messageContainer}
-              style={{ display: disableSendButton ? "block" : "none" }}
-            >
-              * minimum of {entriesLeft} entries remaining to generate a roster
-            </p>
+          <div className={styles.entryPreviewHeader}>
+            <h3 className={styles.title}>Preview Your Entries</h3>
             <p className={styles.previewAddNew} onClick={handleDialogOpen}>
               <IconPlus />
               Add new
             </p>
           </div>
+          <div className={styles.countContainer}>
+            <p
+              className={styles.messageContainer}
+              style={{ display: entriesLeft && entriesLeft > 0 ? "block" : "none" }}
+            >
+              * minimum of {entriesLeft} entries remaining to generate a roster
+            </p>
+          </div>
+          {missingPermissions.length > 0 && (
+            <div className={styles.missingPermissions}>
+              <p> * you do not have anyone that can: </p>
+              <div>
+                {missingPermissions.map((permission: string, index: number) => (
+                  <p key={index}>- {permission}</p>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className={styles.tableWrapper}>
             <table className={styles.previewTable}>
@@ -201,6 +245,7 @@ const ManageOfficiators = () => {
                   <th>s/n</th>
                   <th>Rank</th>
                   <th>Name</th>
+                  <th>Permissions</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,6 +255,30 @@ const ManageOfficiators = () => {
                       <td>{index + 1}</td>
                       <td>{item?.rank.name}</td>
                       <td>{item.name}</td>
+                      <td>
+                        <div>
+                          {item.can_conduct_on_sundays &&
+                            "Can conduct on Sundays"}
+                        </div>
+                        <div>
+                          {item.can_conduct_on_weekdays &&
+                            "Can conduct on Weekdays"}
+                        </div>
+                        <div>
+                          {item.can_preach_on_sundays &&
+                            "Can preach on Sundays"}
+                        </div>
+                        <div>
+                          {item.can_preach_on_weekdays &&
+                            "Can preach on Weekdays"}
+                        </div>
+                        <div>
+                          {item.can_read_on_sundays && "Can read on Sundays"}
+                        </div>
+                        <div>
+                          {item.can_read_on_weekdays && "Can read on Weekdays"}
+                        </div>
+                      </td>
                     </tr>
                   ))}
               </tbody>
