@@ -1,16 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import Dashboard from "./dashboard";
 import styles from "./officiators.module.css";
 import { IconPlus, IconX, IconDownload } from "@tabler/icons-react";
 import Slide from "@mui/material/Slide";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import axios from "axios";
-import EnforcementsCalendar from "../components/calendar";
 import { useDispatch, useSelector } from "react-redux";
-import { setRanks } from "@/app/redux/ranksSlice";
-import { setOfficiatorObject } from "@/app/redux/officiatorObjectsSlice";
 import { newNotification } from "@/app/redux/notificationSlice";
 import Loading from "@/app/components/loader";
 import Roster from "../components/Roster";
@@ -20,11 +16,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { TransitionProps } from "@mui/material/transitions";
 import { RootState } from "@/app/redux/store";
-import services from "@/utils/data/servicesData";
 import OfficiatorInputDialog from "../components/officiatorInputDialog";
-import { saveAs } from "file-saver";
-import { Document, Paragraph, Packer, TextRun } from "docx";
-import Docxtemplater from 'docxtemplater';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -160,40 +152,6 @@ const ManageOfficiators = () => {
     }
   };
 
-  const downloadDocxFile = async () => {
-    const targetElement: any = document.getElementById("target");
-
-    try {
-      const doc = new Document({
-        sections: [
-          {
-            properties: {},
-            children: [
-              new Paragraph({
-                children: [new TextRun(targetElement)],
-              }),
-            ],
-          },
-        ],
-      });
-      const buffer = await Packer.toBuffer(doc);
-      saveAs(new Blob([buffer]), "roster.docx");
-      dispatch(
-        newNotification({
-          message: "Download complete.",
-          backgroundColor: "success",
-        })
-      );
-    } catch (error) {
-      dispatch(
-        newNotification({
-          message: "Error downloading file. Please try again.",
-          backgroundColor: "failure",
-        })
-      );
-    }
-  };
-
   const [showDownloadOptions, setShowDownloadOptions] =
     useState<boolean>(false);
 
@@ -204,9 +162,7 @@ const ManageOfficiators = () => {
         <div onClick={handleDialogOpen} className={styles.createNew}>
           Create an officiation
         </div>
-        {/* <p style={{ cursor: "pointer" }} onClick={handleReduxClear}>
-            Clear redu
-          </p> */}
+
         <div>
           <Dialog open={open} TransitionComponent={Transition}>
             {/* <DialogTitle>{"Create new officiator"}</DialogTitle> */}
@@ -282,34 +238,34 @@ const ManageOfficiators = () => {
       )}
 
       <div className={styles.displayAllOfficiators}>
-        {/* {rosterData && rosterData !== null ? ( */}
-        <div>
-          <div className={styles.rosterHeader}>
-            <h3 className={styles.title}>Generated roster</h3>
-            <IconDownload
-              className={styles.downloadIcon}
-              onClick={() => setShowDownloadOptions(!showDownloadOptions)}
-            />
-            {showDownloadOptions && (
-              <div className={styles.downloadOptionsContainer}>
-                <p onClick={downloadPDF}>Download as .pdf</p>
-                <p onClick={downloadDocxFile}>Download as .docx</p>
+        {rosterData && rosterData !== null ? (
+          <div>
+            <div className={styles.rosterHeader}>
+              <h3 className={styles.title}>Generated roster</h3>
+              <IconDownload
+                className={styles.downloadIcon}
+                onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+              />
+              {showDownloadOptions && (
+                <div className={styles.downloadOptionsContainer}>
+                  <p onClick={downloadPDF}>Download as .pdf</p>
+                  {/* <p onClick={downloadDocxFile}>Download as .docx</p> */}
+                </div>
+              )}
+            </div>
+            <div className={styles.scrollContainer}>
+              <div id="target">
+                <Roster services={rosterData} />
               </div>
-            )}
-          </div>
-          <div className={styles.scrollContainer}>
-            <div id="target">
-              <Roster services={rosterData} />
+            </div>
+
+            <div className={styles.feedbackContainer}>
+              <Feedback />
             </div>
           </div>
-
-          <div className={styles.feedbackContainer}>
-            <Feedback />
-          </div>
-        </div>
-        {/* // ) : (
-        //   ""
-        // )} */}
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
