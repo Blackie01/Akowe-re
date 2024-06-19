@@ -325,8 +325,7 @@
 }
 
 .tableEditDelete {
-  display: flex;
-  justify-content: space-between;
+ 
 }
 
 .actionIcon:hover {

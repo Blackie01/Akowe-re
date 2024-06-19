@@ -106,18 +106,32 @@ const ManageOfficiators = () => {
         setShowEntries(false);
         dispatch(clearOfficiatorObject());
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("error sending details to roster", error);
-      setLoading(false);
-      dispatch(
-        newNotification({
-          message: "There was an error while generating Roster. Try again.",
-          backgroundColor: "failure",
-        })
-      );
-      // handleDialogClose();
-      setOpen(false);
-      // dispatch(clearOfficiatorObject());
+      if (error.response.status === 500) {
+        setLoading(false);
+        console.log("reading 500 error");
+
+        dispatch(
+          newNotification({
+            message:
+              "There is an issue with your entries. Kindly reload and try again.",
+            backgroundColor: "failure",
+          })
+        );
+        setOpen(false);
+      } else {
+        setLoading(false);
+        dispatch(
+          newNotification({
+            message: "There was an error while generating Roster. Try again.",
+            backgroundColor: "failure",
+          })
+        );
+        // handleDialogClose();
+        setOpen(false);
+        // dispatch(clearOfficiatorObject());
+      }
     }
   };
 
@@ -197,15 +211,15 @@ const ManageOfficiators = () => {
   };
 
   // delete entry
-  const [idToDelete, setIdToDelete] = useState(null)
+  const [idToDelete, setIdToDelete] = useState(null);
 
   const handleConfirmDeletion = (id: any) => {
-    setIdToDelete(id)
-  }
+    setIdToDelete(id);
+  };
 
   const cancelDeletion = () => {
-    setIdToDelete(null)
-  }
+    setIdToDelete(null);
+  };
 
   const deleteEntry = (id: any) => {
     dispatch(deleteOfficiatorObjectById(id));
@@ -275,7 +289,7 @@ const ManageOfficiators = () => {
                   <th>Rank</th>
                   <th>Name</th>
                   <th>Permissions</th>
-                  <th>Actions</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -311,24 +325,33 @@ const ManageOfficiators = () => {
                       </td>
                       <td>
                         <div className={styles.tableEditDelete}>
-                          <IconEdit className={styles.actionIcon} />
+                          {/* <IconEdit className={styles.actionIcon} /> */}
                           <IconTrash
                             className={styles.actionIcon}
                             onClick={() => handleConfirmDeletion(item.id)}
                           />
                         </div>
-                       {idToDelete === item.id && <Dialog
-                          open={true}
-                          TransitionComponent={Transition}
-                        >
-                          <DialogContent>
-                            <div>Do you want to delete {item?.rank.name} {item.name}'s officiation?</div>
-                            <div className={styles.deletionConfirmationActions}>
-                              <p onClick={cancelDeletion}>Cancel</p>
-                              <button className={styles.saveToRoster} onClick={() => deleteEntry(idToDelete)}>Delete</button>
-                            </div>
-                          </DialogContent>
-                        </Dialog>}
+                        {idToDelete === item.id && (
+                          <Dialog open={true} TransitionComponent={Transition}>
+                            <DialogContent>
+                              <div>
+                                Do you want to delete {item?.rank.name}{" "}
+                                {item.name}'s officiation?
+                              </div>
+                              <div
+                                className={styles.deletionConfirmationActions}
+                              >
+                                <p onClick={cancelDeletion}>Cancel</p>
+                                <button
+                                  className={styles.saveToRoster}
+                                  onClick={() => deleteEntry(idToDelete)}
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        )}
                       </td>
                     </tr>
                   ))}

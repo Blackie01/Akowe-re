@@ -1,0 +1,21 @@
+.overallContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.divHeaders {
+    font-weight: 500;
+}
+
+.divText {
+    font-size: 0.9rem;
+    font-weight: 300;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    line-height: 1.5rem;
+}
+
+.divText a {
+    text-decoration: underline;
+}
