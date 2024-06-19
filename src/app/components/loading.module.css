@@ -7,7 +7,11 @@
 .loader {
     border: 2px solid #fff;
     border-bottom-color: rgba(80, 51, 87, 0.8);
+    border-bottom-color: #007C7C;
+
     border-left-color: rgba(80, 51, 87, 0.8);
+    border-left-color: #007C7C;
+
     border-radius: 50%;
     display: inline-block;
     box-sizing: border-box;

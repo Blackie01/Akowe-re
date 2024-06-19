@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 // import Intro from "../customComponents/intro";
 import { useDispatch } from "react-redux";
 import { setAuthDetails } from "../redux/authSlice";
+import Loading from "@/app/components/loader";
+
 
 const Login = () => {
   // useEffect(() => {
@@ -21,8 +23,10 @@ const Login = () => {
   const [username, setUsername] = useState<any>();
   const [parish, setParish] = useState<any>()
   const [email, setEmail] = useState<any>();
+  const [loading, setLoading] = useState<Boolean>(false)
 
   const handleLogin = (e: any) => {
+    setLoading(!loading)
     e.preventDefault();
     dispatch(setAuthDetails({ name: username, parish: parish, email: email } as { name: any; parish: any; email: any; } & void));
     router.push("/dashboard/guide");
@@ -55,7 +59,7 @@ const Login = () => {
             placeholder="Your email address"
           />
           <button className={styles.submit} onSubmit={handleLogin}>
-            Sign in
+            {loading? <Loading width={"1rem"} height={"1rem"}/> : 'Sign in'}
           </button>
         </form>
       </div>
