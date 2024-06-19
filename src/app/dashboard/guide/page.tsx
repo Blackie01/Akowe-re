@@ -36,7 +36,7 @@ const Guide = () => {
             Choose at least one permission (what they can do) for the officiator
           </li>
           <li>
-            Enforcements (specifying a duty for an officiator) are optional
+            Enforcements (assigning a duty to an officiator for a specific day) are optional
           </li>
           <li>Click on &apos;Save Entry&apos;</li>
           <li>
@@ -78,11 +78,19 @@ const Guide = () => {
           </li>
           <li>If successful, your roster will be generated and displayed</li>
           <li>Click on the download button to download as pdf</li>
-          <li>
+         
+        </ul>
+      </div>
+
+      <div>
+      <h3 className={styles.divHeaders}>Feedback</h3>
+      <ul className={styles.divText}>
+      <li>
             You can then leave a feedback on your experience with Akowe, if you
             want
           </li>
-        </ul>
+        <li>Tell us what you feel about the app and how we can improve it</li>
+      </ul>
       </div>
 
       <div>
