@@ -336,7 +336,7 @@ const ManageOfficiators = () => {
                             <DialogContent>
                               <div>
                                 Do you want to delete {item?.rank.name}{" "}
-                                {item.name}'s officiation?
+                                {item.name}&apos;s officiation?
                               </div>
                               <div
                                 className={styles.deletionConfirmationActions}

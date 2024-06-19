@@ -5,8 +5,8 @@ const Guide = () => {
   return (
     <section style={{ marginTop: "2rem" }} className={styles.overallContainer}>
       <div>
-        <h2 className={styles.divHeaders}>Welcome to Akowe</h2>
-        <p className={styles.divText}>Here's a guide to get you started.</p>
+        <h2 className={styles.divHeaders}>Welcome to <span>Akowe</span></h2>
+        <p className={styles.divText}>Here&apos;s a guide to get you started.</p>
       </div>
 
       <div>
@@ -29,8 +29,8 @@ const Guide = () => {
       <div>
         <h3 className={styles.divHeaders}>How to use it:</h3>
         <ul className={styles.divText}>
-          <li>Go to 'Officiators' in the menu </li>
-          <li>Click on 'Add officiation entry' button</li>
+          <li>Go to &apos;Officiators&apos; in the menu </li>
+          <li>Click on &apos;Add officiation entry&apos; button</li>
           <li>Enter the name and rank of officiator</li>
           <li>
             Choose at least one permission (what they can do) for the officiator
@@ -38,9 +38,9 @@ const Guide = () => {
           <li>
             Enforcements (specifying a duty for an officiator) are optional
           </li>
-          <li>Click on 'Save Entry'</li>
+          <li>Click on &apos;Save Entry&apos;</li>
           <li>
-            Don't panic at the compulsory requirements you see. Just read and
+            Don&apos;t panic at the compulsory requirements you see. Just read and
             follow them
           </li>
         </ul>
@@ -51,8 +51,8 @@ const Guide = () => {
         <ul className={styles.divText}>
           <li>Select a date (July 2024 only for now)</li>
           <li>Choose the officiation type to enforce for the officiator</li>
-          <li>Click on 'Save Enforcement'</li>
-          <li>Then, you can 'Save Entry'</li>
+          <li>Click on &apos;Save Enforcement&apos;</li>
+          <li>Then, you can &apos;Save Entry&apos;</li>
         </ul>
       </div>
 
@@ -70,10 +70,10 @@ const Guide = () => {
         <h3 className={styles.divHeaders}>Generating Roster</h3>
         <ul className={styles.divText}>
           <li>
-            After following all compulsory requirements, click "Generate Roster"
+            After following all compulsory requirements, click &apos;Generate Roster&apos;
           </li>
           <li>
-            If there is an issue with your entries, you'll get an error message.
+            If there is an issue with your entries, you&apos;ll get an error message.
             Click the reload button.
           </li>
           <li>If successful, your roster will be generated and displayed</li>
