@@ -292,7 +292,7 @@ const ManageOfficiators = () => {
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className={styles.tbody}>
                 {createdOfficiatorDetails &&
                   createdOfficiatorDetails.map((item: any, index: any) => (
                     <tr key={index}>
@@ -334,7 +334,7 @@ const ManageOfficiators = () => {
                         {idToDelete === item.id && (
                           <Dialog open={true} TransitionComponent={Transition}>
                             <DialogContent>
-                              <div>
+                              <div style={{textAlign: 'center'}}>
                                 Do you want to delete {item?.rank.name}{" "}
                                 {item.name}&apos;s officiation?
                               </div>
@@ -387,14 +387,15 @@ const ManageOfficiators = () => {
               <h3 className={styles.title}>Generated roster</h3>
               <IconDownload
                 className={styles.downloadIcon}
-                onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+                // onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+                onClick={downloadPDF}
               />
-              {showDownloadOptions && (
+              {/* {showDownloadOptions && (
                 <div className={styles.downloadOptionsContainer}>
                   <p onClick={downloadPDF}>Download as .pdf</p>
-                  {/* <p onClick={downloadDocxFile}>Download as .docx</p> */}
+               
                 </div>
-              )}
+              )} */}
             </div>
             <div className={styles.scrollContainer}>
               <div id="target">

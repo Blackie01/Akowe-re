@@ -380,3 +380,57 @@
 .deletePill:hover {
   background-color: #e7eeee;
 }
+
+@media (max-width: 1119px) {
+  .previewTable {
+    width: 100%;
+  }
+}
+
+@media (max-width: 690px) {
+ .previewTable {
+  width: 40rem;
+ }
+
+ .tableWrapper {
+  overflow-x: scroll;
+ }
+}
+
+@media (max-width: 656px) {
+  .enforcementSelection {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .duplicateEnforcement {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 590px) {
+  .persona {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .personaInputContainer, .personaSelectContainer {
+    width: 100%;
+  }
+
+  .customizationToSelect {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .individualCheckboxContainer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 371px) {
+  .entryPreviewHeader {
+    flex-direction: column;
+    align-items: start;
+  }
+}
