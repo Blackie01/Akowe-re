@@ -7,6 +7,21 @@
   color: var(--brand-color);
 }
 
+.createARoster {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.reloadIcon {
+  transition: rotate 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.reloadIcon:hover {
+  rotate: 180deg;
+}
+
 .createNew,
 .addNew {
   display: flex;
@@ -283,7 +298,7 @@
 
 .previewTable {
   border-collapse: collapse;
-  width: 50%;
+  width: 70%;
 }
 
 .previewTable th,
@@ -307,6 +322,31 @@
   align-items: center;
   cursor: pointer;
   font-size: 0.9rem;
+}
+
+.tableEditDelete {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actionIcon:hover {
+  cursor: pointer;
+}
+
+.deletionConfirmationActions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-content: center;
+}
+
+.deletionConfirmationActions p {
+  cursor: pointer;
+}
+
+.deletionConfirmationActions button {
+  cursor: pointer;
 }
 
 .duplicateEnforcement {

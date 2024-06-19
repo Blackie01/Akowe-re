@@ -1,13 +1,13 @@
-'use client'
-import React from "react"
+"use client";
+import React from "react";
 import Feedback from "../components/feedback";
 
 const FeedbackPage = () => {
-    return (
-        <section style={{marginTop: '2rem'}}>
-        <Feedback/>
-        </section>
-    )
-}
+  return (
+    <section style={{ marginTop: "2rem" }}>
+      <Feedback />
+    </section>
+  );
+};
 
-export default FeedbackPage
+export default FeedbackPage;

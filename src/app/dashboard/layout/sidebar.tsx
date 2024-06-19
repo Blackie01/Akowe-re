@@ -17,6 +17,10 @@ const SideBar = () => {
       name: "Feedback",
       url: "/dashboard/feedback",
     },
+    {
+      name: "Guide",
+      url: "/dashboard/guide",
+    },
   ];
 
   const parish = useSelector((state: RootState) => state.auth.parish);

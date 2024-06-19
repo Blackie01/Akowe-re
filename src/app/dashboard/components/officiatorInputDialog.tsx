@@ -171,7 +171,7 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
   return (
     <form className={styles.dialogForm} onSubmit={handleSubmit}>
       <p className={styles.dialogTitles} style={{ marginBottom: "1rem" }}>
-        Create new officiation
+        Add officiation entry
       </p>
       <div className={styles.persona}>
         <div className={styles.personaInputContainer}>

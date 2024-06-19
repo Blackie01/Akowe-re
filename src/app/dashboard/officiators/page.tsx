@@ -10,13 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { newNotification } from "@/app/redux/notificationSlice";
 import Loading from "@/app/components/loader";
 import Roster from "../components/Roster";
-import { clearOfficiatorObject } from "@/app/redux/officiatorObjectsSlice";
+import {
+  clearOfficiatorObject,
+  deleteOfficiatorObjectById,
+} from "@/app/redux/officiatorObjectsSlice";
 import Feedback from "../components/feedback";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { TransitionProps } from "@mui/material/transitions";
 import { RootState } from "@/app/redux/store";
 import OfficiatorInputDialog from "../components/officiatorInputDialog";
+import { IconReload, IconEdit, IconTrash } from "@tabler/icons-react";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,7 +43,6 @@ const ManageOfficiators = () => {
   const handleDialogClose = (data: boolean) => {
     setOpen(data);
   };
-
 
   // checking if a minimum of 5 officiators been entered
   const [disableSendButton, setDisableSendButton] = useState(true);
@@ -183,16 +186,40 @@ const ManageOfficiators = () => {
 
   useEffect(() => {
     if (missingPermissions.length > 0) {
-      setDisableSendButton(true)
+      setDisableSendButton(true);
     }
-  }, [missingPermissions])
+  }, [missingPermissions]);
+
+  // reload app
+  const reloadApp = () => {
+    dispatch(clearOfficiatorObject());
+    setShowEntries(false);
+  };
+
+  // delete entry
+  const [idToDelete, setIdToDelete] = useState(null)
+
+  const handleConfirmDeletion = (id: any) => {
+    setIdToDelete(id)
+  }
+
+  const cancelDeletion = () => {
+    setIdToDelete(null)
+  }
+
+  const deleteEntry = (id: any) => {
+    dispatch(deleteOfficiatorObjectById(id));
+  };
 
   return (
     <div className={styles.overallContainer}>
       <div>
-        <h3 className={styles.title}>Create A Roster</h3>
+        <div className={styles.createARoster}>
+          <h3 className={styles.title}>Create A Roster</h3>
+          <IconReload className={styles.reloadIcon} onClick={reloadApp} />
+        </div>
         <div onClick={handleDialogOpen} className={styles.createNew}>
-          Create an officiation
+          Add officiation entry
         </div>
 
         <div>
@@ -222,7 +249,9 @@ const ManageOfficiators = () => {
           <div className={styles.countContainer}>
             <p
               className={styles.messageContainer}
-              style={{ display: entriesLeft && entriesLeft > 0 ? "block" : "none" }}
+              style={{
+                display: entriesLeft && entriesLeft > 0 ? "block" : "none",
+              }}
             >
               * minimum of {entriesLeft} entries remaining to generate a roster
             </p>
@@ -246,6 +275,7 @@ const ManageOfficiators = () => {
                   <th>Rank</th>
                   <th>Name</th>
                   <th>Permissions</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -278,6 +308,27 @@ const ManageOfficiators = () => {
                         <div>
                           {item.can_read_on_weekdays && "Can read on Weekdays"}
                         </div>
+                      </td>
+                      <td>
+                        <div className={styles.tableEditDelete}>
+                          <IconEdit className={styles.actionIcon} />
+                          <IconTrash
+                            className={styles.actionIcon}
+                            onClick={() => handleConfirmDeletion(item.id)}
+                          />
+                        </div>
+                       {idToDelete === item.id && <Dialog
+                          open={true}
+                          TransitionComponent={Transition}
+                        >
+                          <DialogContent>
+                            <div>Do you want to delete {item?.rank.name} {item.name}'s officiation?</div>
+                            <div className={styles.deletionConfirmationActions}>
+                              <p onClick={cancelDeletion}>Cancel</p>
+                              <button className={styles.saveToRoster} onClick={() => deleteEntry(idToDelete)}>Delete</button>
+                            </div>
+                          </DialogContent>
+                        </Dialog>}
                       </td>
                     </tr>
                   ))}

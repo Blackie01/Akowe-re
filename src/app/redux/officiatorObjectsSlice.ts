@@ -11,9 +11,12 @@ const officiatorObject = createSlice({
         },
         clearOfficiatorObject: (state) => {
             state.collectOfficiatorObject = []
-        }
+        },
+        deleteOfficiatorObjectById: (state, action) => {
+            state.collectOfficiatorObject = state.collectOfficiatorObject.filter((obj: any) => obj.id !== action.payload);
+          }
     }
 })
 
-export const {setOfficiatorObject, clearOfficiatorObject} = officiatorObject.actions
+export const {setOfficiatorObject, clearOfficiatorObject, deleteOfficiatorObjectById} = officiatorObject.actions
 export default officiatorObject.reducer
