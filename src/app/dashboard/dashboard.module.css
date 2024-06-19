@@ -31,6 +31,7 @@
     justify-content: flex-end;
     align-items: center;
     background-color: #fff;
+    z-index: 9;
 }
 
 .dashboardHeader p {
@@ -57,7 +58,7 @@
     .sidebarContainer {
         position: fixed;
         width: 40%;
-        z-index: 2;
+        z-index: 10;
         top: 0;
         transform: translateX(-100vw);
         box-shadow: 10px 0 25px 5px rgba(0, 124, 124, 0.3)
