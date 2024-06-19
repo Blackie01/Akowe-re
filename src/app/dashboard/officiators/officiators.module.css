@@ -232,7 +232,7 @@
   align-items: center;
   margin-bottom: 1rem;
   width: max-content;
-  position: relative;
+  /* position: relative; */
 }
 
 .downloadIcon:hover {
