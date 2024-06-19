@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { IconMapPin } from "@tabler/icons-react";
 import { RootState } from "@/app/redux/store";
+import { usePathname } from "next/navigation";
 
 const SideBar = () => {
   const menuItems = [
@@ -25,6 +26,8 @@ const SideBar = () => {
 
   const parish = useSelector((state: RootState) => state.auth.parish);
 
+  const pathname = usePathname();
+
   return (
     <section className={styles.overallContainer}>
       <Link
@@ -39,7 +42,14 @@ const SideBar = () => {
           menuItems.map((menu, index) => (
             <div key={index}>
               <Link style={{ textDecoration: "none" }} href={menu.url}>
-                <p className={styles.menu}>{menu.name}</p>
+                <p
+                  className={styles.menu}
+                  style={{
+                    backgroundColor: pathname === menu.url ? "#108c8c" : "",
+                  }}
+                >
+                  {menu.name}
+                </p>
               </Link>
             </div>
           ))}

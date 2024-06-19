@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     gap: 5rem;
-    padding: 2rem 1rem;
+    padding: 2rem 0;
     position: relative;
     height: 90%;
 }
@@ -17,15 +17,20 @@
 .menu {
     color: #fff;
     cursor: pointer;
-    transition: color 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .menu:hover {
-    color: #faf7f7c0;
+    background-color:#108c8c;
 }
 
 .sidebarLogo {
     font-weight: bold;
+    padding: 0 1rem;
 }
 
 .parishContainer {
@@ -35,4 +40,5 @@
     height: max-content;
     position: absolute;
     bottom: 0;
+    padding: 0 1rem;
 }
