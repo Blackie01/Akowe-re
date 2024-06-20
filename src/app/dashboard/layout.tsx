@@ -39,7 +39,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             {openMenu ? <IconX /> : <IconMenu2 />}
           </div>
         </div>
-        <div>{children}</div>
+        <div style={{backgroundColor: '#fff'}}>{children}</div>
       </div>
     </section>
   );
