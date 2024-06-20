@@ -269,7 +269,7 @@
 
 .scrollContainer {
   overflow-x: scroll;
-  border: 1px solid var(--brand-color);
+  /* border: 1px solid var(--brand-color); */
 }
 
 .entryPreview {

@@ -150,7 +150,7 @@ const ManageOfficiators = () => {
           const componentWidth = pdf.internal.pageSize.getWidth();
           const componentHeight = pdf.internal.pageSize.getHeight();
           pdf.addImage(imgData, "PNG", 0, 0, componentWidth, componentHeight);
-          pdf.save("roster.pdf");
+          pdf.save("July-roster.pdf");
         }
       );
       dispatch(
