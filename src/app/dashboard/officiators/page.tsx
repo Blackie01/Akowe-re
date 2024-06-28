@@ -191,12 +191,12 @@ const ManageOfficiators = () => {
   });
 
   const missingPermissions = [];
-  if (!hasConductOnWeekday) missingPermissions.push("conduct on weekdays");
-  if (!hasConductOnSunday) missingPermissions.push("conduct on Sundays");
-  if (!hasReadOnWeekday) missingPermissions.push("read on weekdays");
-  if (!hasReadOnSunday) missingPermissions.push("read on Sundays");
-  if (!hasPreachOnWeekday) missingPermissions.push("preach on weekdays");
-  if (!hasPreachOnSunday) missingPermissions.push("preach on Sundays");
+  if (!hasConductOnWeekday) missingPermissions.push("Add someone that can conduct on weekdays");
+  if (!hasConductOnSunday) missingPermissions.push("Add someone that can conduct on Sundays");
+  if (!hasReadOnWeekday) missingPermissions.push("Add someone that can read on weekdays");
+  if (!hasReadOnSunday) missingPermissions.push("Add someone that can read on Sundays");
+  if (!hasPreachOnWeekday) missingPermissions.push("Add someone that can preach on weekdays");
+  if (!hasPreachOnSunday) missingPermissions.push("Add someone that can preach on Sundays");
 
   useEffect(() => {
     if (missingPermissions.length > 0) {
@@ -267,17 +267,18 @@ const ManageOfficiators = () => {
                 display: entriesLeft && entriesLeft > 0 ? "block" : "none",
               }}
             >
-              * minimum of {entriesLeft} entries remaining to generate a roster
+              Minimum of <span style={{fontWeight: 'bold', }}>{entriesLeft}</span> entr<span>{entriesLeft == 1 ? 'y' : 'ies'}</span> remaining 
+              {/* to generate a roster */}
             </p>
           </div>
           {missingPermissions.length > 0 && (
             <div className={styles.missingPermissions}>
-              <p> * you do not have anyone that can: </p>
-              <div>
+              {/* <p> You do not have anyone that can: </p> */}
+              {/* <div> */}
                 {missingPermissions.map((permission: string, index: number) => (
-                  <p key={index}>- {permission}</p>
+                  <p key={index} className={styles.messageContainer}>{permission}</p>
                 ))}
-              </div>
+              {/* </div> */}
             </div>
           )}
 
