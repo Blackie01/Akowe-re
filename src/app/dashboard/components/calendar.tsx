@@ -132,6 +132,9 @@ export default function EnforcementsCalendar({
         loading={isLoading}
         onMonthChange={handleMonthChange}
         renderLoading={() => <DayCalendarSkeleton />}
+        minDate={dayjs("2024-07-01")}
+        maxDate={dayjs("2024-07-31")}
+        views={['day']}
         slots={{
           day: ServerDay,
         }}

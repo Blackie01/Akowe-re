@@ -221,7 +221,6 @@
   font-size: 0.8rem;
   height: 1rem;
   opacity: 0.7;
-
 }
 
 .actionsContainer {
@@ -240,7 +239,7 @@
   align-items: center;
   margin-bottom: 1rem;
   width: max-content;
-  /* position: relative; */
+  position: relative;
 }
 
 .downloadIcon:hover {
@@ -297,20 +296,18 @@
   gap: 0.5rem;
   /* color: red; */
   /* opacity: 0.7; */
-width: 70%;
-flex-wrap: wrap;
+  width: 70%;
+  flex-wrap: wrap;
 }
 
 .tableWrapper {
   margin-top: 2rem;
-
 }
 
 .previewTable {
   border-collapse: collapse;
   width: 70%;
   border: 1px solid var(--brand-color);
-
 }
 
 .previewTable th,
@@ -320,7 +317,6 @@ flex-wrap: wrap;
   padding: 1rem;
   font-size: 0.9rem;
   text-align: left;
-
 }
 
 .previewTable th {
@@ -395,7 +391,8 @@ flex-wrap: wrap;
 }
 
 @media (max-width: 1119px) {
-  .previewTable, .missingPermissions {
+  .previewTable,
+  .missingPermissions {
     width: 100%;
   }
 
@@ -405,13 +402,13 @@ flex-wrap: wrap;
 }
 
 @media (max-width: 690px) {
- .previewTable{
-  width: 40rem;
- }
+  .previewTable {
+    width: 40rem;
+  }
 
- .tableWrapper {
-  overflow-x: scroll;
- }
+  .tableWrapper {
+    overflow-x: scroll;
+  }
 }
 
 @media (max-width: 656px) {
@@ -431,7 +428,8 @@ flex-wrap: wrap;
     gap: 1rem;
   }
 
-  .personaInputContainer, .personaSelectContainer {
+  .personaInputContainer,
+  .personaSelectContainer {
     width: 100%;
   }
 
@@ -448,6 +446,13 @@ flex-wrap: wrap;
 @media (max-width: 500px) {
   .missingPermissions {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 470px) {
+  .downloadOptionsContainer {
+    bottom: -400%;
+    right: 0%;
   }
 }
 

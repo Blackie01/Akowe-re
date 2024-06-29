@@ -20,7 +20,10 @@ import { jsPDF } from "jspdf";
 import { TransitionProps } from "@mui/material/transitions";
 import { RootState } from "@/app/redux/store";
 import OfficiatorInputDialog from "../components/officiatorInputDialog";
-import { IconReload, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconReload, IconTrash } from "@tabler/icons-react";
+import ReactDOMServer from "react-dom/server";
+import { Provider } from "react-redux";
+import { store } from "@/app/redux/store";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -79,7 +82,7 @@ const ManageOfficiators = () => {
     const dataToSend = {
       temp_user: username,
       email: useremail,
-      month: "April",
+      month: "July",
       year: "2024",
       bible_lesson_file: "bible_lessons_d.json",
       officiators: createdOfficiatorDetails,
@@ -93,6 +96,10 @@ const ManageOfficiators = () => {
       );
       console.log("confirming roster response", responseFromSendingToRoster);
       if (responseFromSendingToRoster.status === 201) {
+        console.log(
+          "json",
+          JSON.stringify(responseFromSendingToRoster.data.roster)
+        );
         setLoading(false);
         dispatch(
           newNotification({
@@ -138,7 +145,10 @@ const ManageOfficiators = () => {
   // setting roster data
   const [rosterData, setRosterData] = useState(null);
 
-  // handle download button
+  // handle download buttons
+  const [showDownloadOptions, setShowDownloadOptions] =
+    useState<boolean>(false);
+
   const downloadPDF = () => {
     const targetElement: any = document.getElementById("target");
     const pdf = new jsPDF("landscape");
@@ -170,8 +180,96 @@ const ManageOfficiators = () => {
     }
   };
 
-  const [showDownloadOptions, setShowDownloadOptions] =
-    useState<boolean>(false);
+  const renderComponentToHtml = async (rosterData: any) => {
+    const htmlString = ReactDOMServer.renderToStaticMarkup(
+      <Provider store={store}>
+        <Roster services={rosterData} />
+      </Provider>
+    );
+
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Service Roster</title>
+    
+    </head>
+    <body>
+      ${htmlString}
+    </body>
+    </html>
+  `;
+  };
+
+  const funcSendHtmlToBE = async (htmlString: any) => {
+    const blob = new Blob([htmlString], { type: "text/html" });
+    const formData = new FormData();
+    formData.append("roster", blob, "roster.html");
+
+    const url = URL.createObjectURL(blob);
+
+    try {
+      const endpointToConvertToDocx = `${process.env.NEXT_PUBLIC_API_ENDPOINT}/rosters/convert`;
+      const responseFromConversion = await axios.post(
+        endpointToConvertToDocx,
+        formData,
+        { responseType: "blob" }
+      );
+      console.log("response", responseFromConversion);
+      if (responseFromConversion.status === 200) {
+        const docxblob = new Blob([responseFromConversion.data], {
+          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+
+        // Create a URL for the Blob and trigger the download
+        const url = URL.createObjectURL(docxblob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "July-roster.docx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url); // Clean up the URL
+
+        dispatch(
+          newNotification({
+            message: "Download successful.",
+            backgroundColor: "success",
+          })
+        );
+      } else {
+        console.log("response from BE", responseFromConversion);
+        dispatch(
+          newNotification({
+            message: "Error downloading file. Please try again.",
+            backgroundColor: "failure",
+          })
+        );
+      }
+    } catch (error) {
+      console.error("error", error);
+      dispatch(
+        newNotification({
+          message: "Error downloading file. Please try again.",
+          backgroundColor: "failure",
+        })
+      );
+    }
+  };
+
+  const downloadAsDocx = async (e: any) => {
+    e.preventDefault();
+    const htmlString = await renderComponentToHtml(rosterData);
+    funcSendHtmlToBE(htmlString);
+  };
+
+  //   const a = document.createElement('a');
+  // a.href = url;
+  // a.download = 'roster.html';
+  // document.body.appendChild(a);
+  // a.click();
 
   // checking if each permission is selected at least once
   let hasConductOnWeekday = false;
@@ -191,12 +289,18 @@ const ManageOfficiators = () => {
   });
 
   const missingPermissions = [];
-  if (!hasConductOnWeekday) missingPermissions.push("Add someone that can conduct on weekdays");
-  if (!hasConductOnSunday) missingPermissions.push("Add someone that can conduct on Sundays");
-  if (!hasReadOnWeekday) missingPermissions.push("Add someone that can read on weekdays");
-  if (!hasReadOnSunday) missingPermissions.push("Add someone that can read on Sundays");
-  if (!hasPreachOnWeekday) missingPermissions.push("Add someone that can preach on weekdays");
-  if (!hasPreachOnSunday) missingPermissions.push("Add someone that can preach on Sundays");
+  if (!hasConductOnWeekday)
+    missingPermissions.push("Add someone that can conduct on weekdays");
+  if (!hasConductOnSunday)
+    missingPermissions.push("Add someone that can conduct on Sundays");
+  if (!hasReadOnWeekday)
+    missingPermissions.push("Add someone that can read on weekdays");
+  if (!hasReadOnSunday)
+    missingPermissions.push("Add someone that can read on Sundays");
+  if (!hasPreachOnWeekday)
+    missingPermissions.push("Add someone that can preach on weekdays");
+  if (!hasPreachOnSunday)
+    missingPermissions.push("Add someone that can preach on Sundays");
 
   useEffect(() => {
     if (missingPermissions.length > 0) {
@@ -267,7 +371,9 @@ const ManageOfficiators = () => {
                 display: entriesLeft && entriesLeft > 0 ? "block" : "none",
               }}
             >
-              Minimum of <span style={{fontWeight: 'bold', }}>{entriesLeft}</span> entr<span>{entriesLeft == 1 ? 'y' : 'ies'}</span> remaining 
+              Minimum of{" "}
+              <span style={{ fontWeight: "bold" }}>{entriesLeft}</span> entr
+              <span>{entriesLeft == 1 ? "y" : "ies"}</span> remaining
               {/* to generate a roster */}
             </p>
           </div>
@@ -275,9 +381,11 @@ const ManageOfficiators = () => {
             <div className={styles.missingPermissions}>
               {/* <p> You do not have anyone that can: </p> */}
               {/* <div> */}
-                {missingPermissions.map((permission: string, index: number) => (
-                  <p key={index} className={styles.messageContainer}>{permission}</p>
-                ))}
+              {missingPermissions.map((permission: string, index: number) => (
+                <p key={index} className={styles.messageContainer}>
+                  {permission}
+                </p>
+              ))}
               {/* </div> */}
             </div>
           )}
@@ -335,7 +443,7 @@ const ManageOfficiators = () => {
                         {idToDelete === item.id && (
                           <Dialog open={true} TransitionComponent={Transition}>
                             <DialogContent>
-                              <div style={{textAlign: 'center'}}>
+                              <div style={{ textAlign: "center" }}>
                                 Do you want to delete {item?.rank.name}{" "}
                                 {item.name}&apos;s officiation?
                               </div>
@@ -388,15 +496,15 @@ const ManageOfficiators = () => {
               <h3 className={styles.title}>Generated roster</h3>
               <IconDownload
                 className={styles.downloadIcon}
-                // onClick={() => setShowDownloadOptions(!showDownloadOptions)}
-                onClick={downloadPDF}
+                onClick={() => setShowDownloadOptions(!showDownloadOptions)}
+                // onClick={downloadPDF}
               />
-              {/* {showDownloadOptions && (
+              {showDownloadOptions && (
                 <div className={styles.downloadOptionsContainer}>
                   <p onClick={downloadPDF}>Download as .pdf</p>
-               
+                  <p onClick={downloadAsDocx}>Download as .docx</p>
                 </div>
-              )} */}
+              )}
             </div>
             <div className={styles.scrollContainer}>
               <div id="target">

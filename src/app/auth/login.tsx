@@ -47,16 +47,19 @@ const Login = () => {
             onChange={(e: any) => setUsername(e.target.value)}
             type="text"
             placeholder="Your name"
+            required
           />
            <input
             onChange={(e: any) => setParish(e.target.value)}
             type="text"
             placeholder="Your parish"
+            required
           />
           <input
             onChange={(e: any) => setEmail(e.target.value)}
             type="email"
             placeholder="Your email address"
+            required
           />
           <button className={styles.submit} onSubmit={handleLogin}>
             {loading? <Loading width={"1rem"} height={"1rem"}/> : 'Sign in'}

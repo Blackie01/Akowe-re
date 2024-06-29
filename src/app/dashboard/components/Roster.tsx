@@ -16,11 +16,11 @@ const Roster = ({ services }: any) => {
         <table className="service-table">
           <thead>
             <tr>
-              <th>DAY/DATE</th>
-              <th>CONDUCTOR</th>
-              <th>1ST BIBLE LESSON AND READER</th>
-              <th>2ND BIBLE LESSON AND READER</th>
-              <th>SERMONER</th>
+              <th style={{border: '1px solid #007C7C', backgroundColor: '#007C7C'}}>DAY/DATE</th>
+              <th style={{border: '1px solid #007C7C', backgroundColor: '#007C7C'}}>CONDUCTOR</th>
+              <th style={{border: '1px solid #007C7C', backgroundColor: '#007C7C'}}>1ST BIBLE LESSON AND READER</th>
+              <th style={{border: '1px solid #007C7C', backgroundColor: '#007C7C'}}>2ND BIBLE LESSON AND READER</th>
+              <th style={{border: '1px solid #007C7C', backgroundColor: '#007C7C'}}>SERMONER</th>
             </tr>
           </thead>
           <tbody>
@@ -30,16 +30,16 @@ const Roster = ({ services }: any) => {
                   key={index}
                   className={service.day === "Sunday" ? "sunday-row" : ""}
                 >
-                  <td>
+                  <td style={{border: '1px solid #007C7C'}}>
                     <div>{service.day}</div>
                     <div className="bold">{service.date}</div>
                   </td>
-                  <td>{service.conductor}</td>
-                  <td>
+                  <td style={{border: '1px solid #007C7C'}}>{service.conductor}</td>
+                  <td style={{border: '1px solid #007C7C'}}>
                     <div className="bold">{service.first_lesson.lesson}</div>
                     <div>{service.first_lesson.reader}</div>
                   </td>
-                  <td>
+                  <td style={{border: '1px solid #007C7C'}}>
                     {service.second_lesson && (
                       <>
                         <div className="bold">
@@ -49,7 +49,7 @@ const Roster = ({ services }: any) => {
                       </>
                     )}
                   </td>
-                  <td>{service.preacher}</td>
+                  <td style={{border: '1px solid #007C7C'}}>{service.preacher}</td>
                 </tr>
               ))}
           </tbody>

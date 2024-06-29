@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,14 @@ import { newNotification } from "@/app/redux/notificationSlice";
 
 const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
   const dispatch = useDispatch();
+  const inputRef: React.RefObject<HTMLInputElement> = useRef(null);
+
+  useEffect(() => {
+    const focusInput = () => {
+      inputRef?.current?.focus();
+    };
+    focusInput();
+  }, []);
 
   // get rank data from BE
   const ranksFromRedux: any = useSelector(
@@ -178,6 +186,7 @@ const OfficiatorInputDialog = ({ dialogCloseTrigger }: any) => {
           <input
             required
             type="text"
+            ref={inputRef}
             placeholder="Enter officiator name"
             onChange={(e) => setOfficiatorName(e.target.value)}
           />
